@@ -6,7 +6,7 @@ namespace SemVer.Tests
     public class ParseMajorMinorPatch
     {
         [Fact]
-        public void ParseMajorVersion ()
+        public void ParseMajorVersion()
         {
             var testCases = new Tuple<string, int>[] {
                 Tuple.Create("1.2.3", 1),
@@ -28,7 +28,7 @@ namespace SemVer.Tests
         }
 
         [Fact]
-        public void ParseMinorVersion ()
+        public void ParseMinorVersion()
         {
             var testCases = new Tuple<string, int>[] {
                 Tuple.Create("1.2.3", 2),
@@ -50,7 +50,7 @@ namespace SemVer.Tests
         }
 
         [Fact]
-        public void ParsePatchVersion ()
+        public void ParsePatchVersion()
         {
             var testCases = new Tuple<string, int>[] {
                 Tuple.Create("1.2.3", 3),
