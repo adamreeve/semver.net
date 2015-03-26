@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SemVer
 {
     public class Range
     {
-        private IEnumerable<ComparatorSet> ComparatorSets;
+        private readonly IEnumerable<ComparatorSet> _comparatorSets;
 
-        public Range(string spec)
+        public Range(string rangeSpec)
         {
+            var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.RemoveEmptyEntries);
+            _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s));
         }
 
         public bool Match(Version version)
         {
-            throw new NotImplementedException();
+            return _comparatorSets.Any(s => s.Match(version));
         }
 
         public IEnumerable<Version> Filter(IEnumerable<Version> versions)
         {
-            throw new NotImplementedException();
+            return versions.Where(Match);
         }
 
         public Version Select(IEnumerable<Version> versions)
         {
-            throw new NotImplementedException();
+            return Filter(versions).Max();
         }
     }
 }
