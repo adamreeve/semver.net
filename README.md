@@ -1,6 +1,8 @@
 SemVer.NET: The semantic versioner for .NET.
 ============================================
 
+[![Build Status](https://travis-ci.org/adamreeve/semver.net.svg?branch=master)](https://travis-ci.org/adamreeve/semver.net)
+
 This library aims to implements the
 [Semantic Versioning specification](http://semver.org/)
 and the version range specification used by
