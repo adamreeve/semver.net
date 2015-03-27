@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace SemVer
 {
-    public class Comparator
+    public class Comparator : IEquatable<Comparator>
     {
-        private readonly ComparatorType _comparatorType;
+        private readonly Operator _comparatorType;
 
         private readonly Version _comparatorVersion;
 
@@ -30,21 +30,31 @@ namespace SemVer
             _comparatorVersion = new Version(match.Groups[2].Value);
         }
 
-        private static ComparatorType ParseComparatorType(string input)
+        public Comparator(Operator comparatorType, Version comparatorVersion)
+        {
+            if (comparatorVersion == null)
+            {
+                throw new NullReferenceException("Null comparator version");
+            }
+            _comparatorType = comparatorType;
+            _comparatorVersion = comparatorVersion;
+        }
+
+        private static Operator ParseComparatorType(string input)
         {
             switch (input)
             {
                 case (""):
                 case ("="):
-                    return ComparatorType.Equal;
+                    return Operator.Equal;
                 case ("<"):
-                    return ComparatorType.LessThan;
+                    return Operator.LessThan;
                 case ("<="):
-                    return ComparatorType.LessThanOrEqual;
+                    return Operator.LessThanOrEqual;
                 case (">"):
-                    return ComparatorType.GreaterThan;
+                    return Operator.GreaterThan;
                 case (">="):
-                    return ComparatorType.GreaterThanOrEqual;
+                    return Operator.GreaterThanOrEqual;
                 default:
                     throw new ArgumentException(String.Format("Invalid comparator type: {0}", input));
             }
@@ -54,28 +64,73 @@ namespace SemVer
         {
             switch(_comparatorType)
             {
-                case(ComparatorType.Equal):
+                case(Operator.Equal):
                     return version == _comparatorVersion;
-                case(ComparatorType.LessThan):
+                case(Operator.LessThan):
                     return version < _comparatorVersion;
-                case(ComparatorType.LessThanOrEqual):
+                case(Operator.LessThanOrEqual):
                     return version <= _comparatorVersion;
-                case(ComparatorType.GreaterThan):
+                case(Operator.GreaterThan):
                     return version > _comparatorVersion;
-                case(ComparatorType.GreaterThanOrEqual):
+                case(Operator.GreaterThanOrEqual):
                     return version >= _comparatorVersion;
                 default:
                     throw new InvalidOperationException("Comparator type not recognised.");
             }
         }
 
-        private enum ComparatorType
+        public enum Operator
         {
             Equal = 0,
             LessThan,
             LessThanOrEqual,
             GreaterThan,
             GreaterThanOrEqual,
+        }
+
+        public override string ToString()
+        {
+            string operatorString = null;
+            switch(_comparatorType)
+            {
+                case(Operator.Equal):
+                    operatorString = "=";
+                    break;
+                case(Operator.LessThan):
+                    operatorString = "<";
+                    break;
+                case(Operator.LessThanOrEqual):
+                    operatorString = "<=";
+                    break;
+                case(Operator.GreaterThan):
+                    operatorString = ">";
+                    break;
+                case(Operator.GreaterThanOrEqual):
+                    operatorString = ">=";
+                    break;
+                default:
+                    throw new InvalidOperationException("Comparator type not recognised.");
+            }
+            return String.Format("{0}{1}", operatorString, _comparatorVersion);
+        }
+
+        public bool Equals(Comparator other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            return ToString() == other.ToString();
+        }
+
+        public override bool Equals(object other)
+        {
+            return Equals(other as Comparator);
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }
