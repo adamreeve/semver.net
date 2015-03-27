@@ -1,74 +1,56 @@
 ﻿using Xunit;
-using System;
+using Xunit.Extensions;
 
 namespace SemVer.Tests
 {
     public class ParseMajorMinorPatch
     {
-        [Fact]
-        public void ParseMajorVersion()
+        [Theory]
+        [InlineData("1.2.3", 1)]
+        [InlineData(" 1.2.3 ", 1)]
+        [InlineData(" 2.2.3-4 ", 2)]
+        [InlineData(" 3.2.3-pre ", 3)]
+        [InlineData("v5.2.3", 5)]
+        [InlineData(" v8.2.3 ", 8)]
+        [InlineData("\t13.2.3", 13)]
+        [InlineData("=21.2.3", 21)]
+        [InlineData("v=34.2.3", 34)]
+        public void ParseMajorVersion(string versionString, int majorVersion)
         {
-            var testCases = new Tuple<string, int>[] {
-                Tuple.Create("1.2.3", 1),
-                Tuple.Create(" 1.2.3 ", 1),
-                Tuple.Create(" 2.2.3-4 ", 2),
-                Tuple.Create(" 3.2.3-pre ", 3),
-                Tuple.Create("v5.2.3", 5),
-                Tuple.Create(" v8.2.3 ", 8),
-                Tuple.Create("\t13.2.3", 13),
-                Tuple.Create("=21.2.3", 21),
-                Tuple.Create("v=34.2.3", 34),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var version = new SemVer.Version(testCase.Item1);
-                Assert.Equal(version.Major, testCase.Item2);
-            }
+            var version = new Version(versionString);
+            Assert.Equal(version.Major, majorVersion);
         }
 
-        [Fact]
-        public void ParseMinorVersion()
+        [Theory]
+        [InlineData("1.2.3", 2)]
+        [InlineData(" 1.2.3 ", 2)]
+        [InlineData(" 2.2.3-4 ", 2)]
+        [InlineData(" 3.2.3-pre ", 2)]
+        [InlineData("v5.2.3", 2)]
+        [InlineData(" v8.2.3 ", 2)]
+        [InlineData("\t13.2.3", 2)]
+        [InlineData("=21.2.3", 2)]
+        [InlineData("v=34.2.3", 2)]
+        public void ParseMinorVersion(string versionString, int minorVersion)
         {
-            var testCases = new Tuple<string, int>[] {
-                Tuple.Create("1.2.3", 2),
-                Tuple.Create(" 1.2.3 ", 2),
-                Tuple.Create(" 2.2.3-4 ", 2),
-                Tuple.Create(" 3.2.3-pre ", 2),
-                Tuple.Create("v5.2.3", 2),
-                Tuple.Create(" v8.2.3 ", 2),
-                Tuple.Create("\t13.2.3", 2),
-                Tuple.Create("=21.2.3", 2),
-                Tuple.Create("v=34.2.3", 2),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var version = new SemVer.Version(testCase.Item1);
-                Assert.Equal(version.Minor, testCase.Item2);
-            }
+            var version = new Version(versionString);
+            Assert.Equal(version.Minor, minorVersion);
         }
 
-        [Fact]
-        public void ParsePatchVersion()
+        [Theory]
+        [InlineData("1.2.3", 3)]
+        [InlineData(" 1.2.3 ", 3)]
+        [InlineData(" 2.2.3-4 ", 3)]
+        [InlineData(" 3.2.3-pre ", 3)]
+        [InlineData("v5.2.3", 3)]
+        [InlineData(" v8.2.3 ", 3)]
+        [InlineData("\t13.2.3", 3)]
+        [InlineData("=21.2.3", 3)]
+        [InlineData("v=34.2.3", 3)]
+        public void ParsePatchVersion(string versionString, int patchVersion)
         {
-            var testCases = new Tuple<string, int>[] {
-                Tuple.Create("1.2.3", 3),
-                Tuple.Create(" 1.2.3 ", 3),
-                Tuple.Create(" 2.2.3-4 ", 3),
-                Tuple.Create(" 3.2.3-pre ", 3),
-                Tuple.Create("v5.2.3", 3),
-                Tuple.Create(" v8.2.3 ", 3),
-                Tuple.Create("\t13.2.3", 3),
-                Tuple.Create("=21.2.3", 3),
-                Tuple.Create("v=34.2.3", 3),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var version = new SemVer.Version(testCase.Item1);
-                Assert.Equal(version.Patch, testCase.Item2);
-            }
+            var version = new Version(versionString);
+            Assert.Equal(version.Patch, patchVersion);
         }
     }
 }

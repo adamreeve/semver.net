@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using System;
+using Xunit.Extensions;
 
 namespace SemVer.Tests
 {
@@ -8,144 +8,96 @@ namespace SemVer.Tests
         [Fact]
         public void EqualVersions()
         {
-            var a = new SemVer.Version("1.2.3");
-            var b = new SemVer.Version("1.2.3");
+            var a = new Version("1.2.3");
+            var b = new Version("1.2.3");
             Assert.True(a == b);
             Assert.True(a.Equals(b));
             var obja = a as object;
             Assert.True(obja.Equals(b));
         }
 
-        [Fact]
-        public void GreaterThan()
+        [Theory]
+        [InlineData("1.2.3", "1.2.2")]
+        [InlineData("1.2.3", "1.1.3")]
+        [InlineData("1.2.3", "0.2.3")]
+        public void GreaterThan(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.2"),
-                Tuple.Create("1.2.3", "1.1.3"),
-                Tuple.Create("1.2.3", "0.2.3"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.True(a > b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.True(versionA > versionB);
         }
 
-        [Fact]
-        public void NotGreaterThan()
+        [Theory]
+        [InlineData("1.2.3", "1.2.3")]
+        [InlineData("1.2.3", "1.2.4")]
+        public void NotGreaterThan(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.3"),
-                Tuple.Create("1.2.3", "1.2.4"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.False(a > b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.False(versionA > versionB);
         }
 
-        [Fact]
-        public void GreaterThanOrEqual()
+        [Theory]
+        [InlineData("1.2.3", "1.2.3")]
+        [InlineData("1.2.3", "1.2.2")]
+        [InlineData("1.2.3", "1.1.3")]
+        [InlineData("1.2.3", "0.2.3")]
+        public void GreaterThanOrEqual(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.3"),
-                Tuple.Create("1.2.3", "1.2.2"),
-                Tuple.Create("1.2.3", "1.1.3"),
-                Tuple.Create("1.2.3", "0.2.3"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.True(a >= b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.True(versionA >= versionB);
         }
 
-        [Fact]
-        public void NotGreaterThanOrEqual()
+        [Theory]
+        [InlineData("1.2.3", "1.2.4")]
+        public void NotGreaterThanOrEqual(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.4"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.False(a >= b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.False(versionA >= versionB);
         }
 
-        [Fact]
-        public void Lesshan()
+        [Theory]
+        [InlineData("1.2.3", "1.2.4")]
+        [InlineData("1.2.3", "1.3.3")]
+        [InlineData("1.2.3", "2.2.3")]
+        public void LessThan(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.4"),
-                Tuple.Create("1.2.3", "1.3.3"),
-                Tuple.Create("1.2.3", "2.2.3"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.True(a < b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.True(versionA < versionB);
         }
 
-        [Fact]
-        public void NotLesshan()
+        [Theory]
+        [InlineData("1.2.3", "1.2.3")]
+        [InlineData("1.2.3", "1.2.2")]
+        public void NotLessThan(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.3"),
-                Tuple.Create("1.2.3", "1.2.2"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.False(a < b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.False(versionA < versionB);
         }
 
-        [Fact]
-        public void LesshanOrEqual()
+        [Theory]
+        [InlineData("1.2.3", "1.2.3")]
+        [InlineData("1.2.3", "1.2.4")]
+        [InlineData("1.2.3", "1.3.3")]
+        [InlineData("1.2.3", "2.2.3")]
+        public void LessThanOrEqual(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.3"),
-                Tuple.Create("1.2.3", "1.2.4"),
-                Tuple.Create("1.2.3", "1.3.3"),
-                Tuple.Create("1.2.3", "2.2.3"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.True(a <= b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.True(versionA <= versionB);
         }
 
-        [Fact]
-        public void NotLesshanOrEqual()
+        [Theory]
+        [InlineData("1.2.3", "1.2.2")]
+        public void NotLessThanOrEqual(string a, string b)
         {
-            var testCases = new Tuple<string, string>[] {
-                Tuple.Create("1.2.3", "1.2.2"),
-            };
-
-            foreach (var testCase in testCases)
-            {
-                var a = new SemVer.Version(testCase.Item1);
-                var b = new SemVer.Version(testCase.Item2);
-                Assert.False(a <= b);
-            }
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.False(versionA <= versionB);
         }
     }
 }
