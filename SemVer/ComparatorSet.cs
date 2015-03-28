@@ -10,6 +10,7 @@ namespace SemVer
 
         public ComparatorSet(string spec)
         {
+            spec = spec.Trim();
             // A comparator set might be an advanced range specifier
             // like ~1.2.3, ^1.2, or 1.*.
             // Check for these first before standard comparator sets:
