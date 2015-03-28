@@ -103,7 +103,7 @@ namespace SemVer
         {
             if (ReferenceEquals(a, null))
             {
-                return b == null;
+                return ReferenceEquals(b, null);
             }
             return a.Equals(b);
         }
