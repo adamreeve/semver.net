@@ -98,7 +98,42 @@ namespace SemVer
 
         public static IEnumerable<Comparator> StarRange(string spec)
         {
-            return null;
+            PartialVersion version = null;
+            try
+            {
+                version = new PartialVersion(spec);
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
+
+            // If partial version match is actually a full version,
+            // then this isn't a star range, so return null.
+            if (version.IsFull())
+            {
+                return null;
+            }
+
+            Version minVersion = null;
+            Version maxVersion = null;
+            if (!version.Major.HasValue)
+            {
+                minVersion = version.ToZeroVersion();
+                // no max version
+            }
+            else if (!version.Minor.HasValue)
+            {
+                minVersion = version.ToZeroVersion();
+                maxVersion = new Version(version.Major.Value + 1, 0, 0);
+            }
+            else
+            {
+                minVersion = version.ToZeroVersion();
+                maxVersion = new Version(version.Major.Value, version.Minor.Value + 1, 0);
+            }
+
+            return minMaxComparators(minVersion, maxVersion);
         }
 
         private static Comparator[] minMaxComparators(Version minVersion, Version maxVersion)
@@ -106,10 +141,17 @@ namespace SemVer
             var minComparator = new Comparator(
                     Comparator.Operator.GreaterThanOrEqual,
                     minVersion);
-            var maxComparator = new Comparator(
-                    Comparator.Operator.LessThan,
-                    maxVersion);
-            return new [] { minComparator, maxComparator };
+            if (maxVersion == null)
+            {
+                return new [] { minComparator };
+            }
+            else
+            {
+                var maxComparator = new Comparator(
+                        Comparator.Operator.LessThan,
+                        maxVersion);
+                return new [] { minComparator, maxComparator };
+            }
         }
     }
 }

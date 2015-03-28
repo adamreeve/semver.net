@@ -86,5 +86,10 @@ namespace SemVer
                     Minor ?? 0,
                     Patch ?? 0);
         }
+
+        public bool IsFull()
+        {
+            return Major.HasValue && Minor.HasValue && Patch.HasValue;
+        }
     }
 }
