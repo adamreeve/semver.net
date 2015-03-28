@@ -52,10 +52,27 @@ namespace SemVer.Tests
         [InlineData("", new string[] { ">=0.0.0" })]
         [InlineData("1", new string[] { ">=1.0.0", "<2.0.0" })]
         [InlineData("1.2", new string[] { ">=1.2.0", "<1.3.0" })]
-        public void TestStarRanges(string range,
-                string[] comparatorStrings)
+        public void TestStarRanges(string range, string[] comparatorStrings)
         {
             var comparators = Desugarer.StarRange(range).ToArray();
+
+            Assert.Equal(comparators.Count(), comparatorStrings.Count());
+
+            foreach (var comparatorString in comparatorStrings)
+            {
+                var comparator = new Comparator(comparatorString);
+                Assert.Contains(comparator, comparators);
+            }
+        }
+
+        [Theory]
+        [InlineData("1.2.3 - 2.3.4", new string[] { ">=1.2.3", "<=2.3.4" })]
+        [InlineData("1.2 - 2.3.4", new string[] { ">=1.2.0", "<=2.3.4" })]
+        [InlineData("1.2.3 - 2.3", new string[] { ">=1.2.3", "<2.4.0" })]
+        [InlineData("1.2.3 - 2", new string[] { ">=1.2.3", "<3.0.0" })]
+        public void TestHyphenRanges(string range, string[] comparatorStrings)
+        {
+            var comparators = Desugarer.HyphenRange(range).ToArray();
 
             Assert.Equal(comparators.Count(), comparatorStrings.Count());
 

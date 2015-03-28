@@ -11,7 +11,7 @@ namespace SemVer
         // on the comparator. Allows minor-level changes if not.
         public static IEnumerable<Comparator> TildeRange(string spec)
         {
-            const string pattern = @"^~(.+)$";
+            const string pattern = @"^~(\S+)$";
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -43,7 +43,7 @@ namespace SemVer
         // in the [major, minor, patch] tuple.
         public static IEnumerable<Comparator> CaretRange(string spec)
         {
-            const string pattern = @"^\^(.+)$";
+            const string pattern = @"^\^(\S+)$";
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -93,7 +93,58 @@ namespace SemVer
 
         public static IEnumerable<Comparator> HyphenRange(string spec)
         {
-            return null;
+            const string pattern = @"^(\S+)\s+\-\s+(\S+)$";
+
+            var regex = new Regex(pattern);
+            var match = regex.Match(spec);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            PartialVersion minPartialVersion = null;
+            PartialVersion maxPartialVersion = null;
+
+            // Parse versions from lower and upper ranges, which might
+            // be partial versions.
+            try
+            {
+                minPartialVersion = new PartialVersion(match.Groups[1].Value);
+                maxPartialVersion = new PartialVersion(match.Groups[2].Value);
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
+
+            // Lower range has any non-supplied values replaced with zero
+            var minVersion = minPartialVersion.ToZeroVersion();
+
+            Comparator.Operator maxOperator = maxPartialVersion.IsFull()
+                ? Comparator.Operator.LessThanOrEqual : Comparator.Operator.LessThan;
+
+            Version maxVersion = null;
+
+            // Partial upper range means supplied version values can't change
+            if (!maxPartialVersion.Major.HasValue)
+            {
+                // eg. upper range = "*", then maxVersion remains null
+                // and there's only a minimum
+            }
+            else if (!maxPartialVersion.Minor.HasValue)
+            {
+                maxVersion = new Version(maxPartialVersion.Major.Value + 1, 0, 0);
+            }
+            else if (!maxPartialVersion.Patch.HasValue)
+            {
+                maxVersion = new Version(maxPartialVersion.Major.Value, maxPartialVersion.Minor.Value + 1, 0);
+            }
+            else
+            {
+                // Fully specified max version
+                maxVersion = maxPartialVersion.ToZeroVersion();
+            }
+            return minMaxComparators(minVersion, maxVersion, maxOperator);
         }
 
         public static IEnumerable<Comparator> StarRange(string spec)
@@ -136,7 +187,8 @@ namespace SemVer
             return minMaxComparators(minVersion, maxVersion);
         }
 
-        private static Comparator[] minMaxComparators(Version minVersion, Version maxVersion)
+        private static Comparator[] minMaxComparators(Version minVersion, Version maxVersion,
+                Comparator.Operator maxOperator=Comparator.Operator.LessThan)
         {
             var minComparator = new Comparator(
                     Comparator.Operator.GreaterThanOrEqual,
@@ -148,8 +200,7 @@ namespace SemVer
             else
             {
                 var maxComparator = new Comparator(
-                        Comparator.Operator.LessThan,
-                        maxVersion);
+                        maxOperator, maxVersion);
                 return new [] { minComparator, maxComparator };
             }
         }
