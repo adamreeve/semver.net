@@ -35,6 +35,7 @@
     <Compile Include="Comparator.cs" />
     <Compile Include="ComparatorSet.cs" />
     <Compile Include="Desugarer.cs" />
+    <Compile Include="PartialVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Version.cs" />

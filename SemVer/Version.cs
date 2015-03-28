@@ -41,6 +41,13 @@ namespace SemVer
             Patch = Int32.Parse(match.Groups[3].Value);
         }
 
+        public Version(int major, int minor, int patch)
+        {
+            Major = major;
+            Minor = minor;
+            Patch = patch;
+        }
+
         public override string ToString()
         {
             return String.Format("{0}.{1}.{2}", Major, Minor, Patch);

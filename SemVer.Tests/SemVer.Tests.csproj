@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AdvancedRanges.cs" />
     <Compile Include="ParseMajorMinorPatch.cs" />
+    <Compile Include="PartialVersion.cs" />
     <Compile Include="SimpleRanges.cs" />
     <Compile Include="VersionComparison.cs" />
   </ItemGroup>
