@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SemVer
@@ -15,19 +16,21 @@ namespace SemVer
 
         public PartialVersion(string input)
         {
-            string pattern = @"^
+            const string pattern = @"^
                 (\d+)                            # major version
                 (
                     \.
-                    (\d+)                        # minor version
+                    (\d+|[Xx\*])                 # minor version
                     (
                         \.
-                        (\d+)                    # patch version
+                        (\d+|[Xx\*])             # patch version
                         (\-([0-9A-Za-z\-\.]+))?  # pre-release version
                         (\+([0-9A-Za-z\-\.]+))?  # build metadata
                     )?
                 )?
                 $";
+
+            string[] xValues = { "X", "x", "*" };
 
             var regex = new Regex(pattern, RegexOptions.IgnorePatternWhitespace);
             var match = regex.Match(input);
@@ -40,12 +43,26 @@ namespace SemVer
 
             if (match.Groups[2].Success)
             {
-                Minor = Int32.Parse(match.Groups[3].Value);
+                if (xValues.Contains(match.Groups[3].Value))
+                {
+                    Minor = null;
+                }
+                else
+                {
+                    Minor = Int32.Parse(match.Groups[3].Value);
+                }
             }
 
             if (match.Groups[4].Success)
             {
-                Patch = Int32.Parse(match.Groups[5].Value);
+                if (xValues.Contains(match.Groups[5].Value))
+                {
+                    Patch = null;
+                }
+                else
+                {
+                    Patch = Int32.Parse(match.Groups[5].Value);
+                }
             }
         }
 
