@@ -10,7 +10,7 @@ namespace SemVer
 
         public Range(string rangeSpec)
         {
-            var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.RemoveEmptyEntries);
+            var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.None);
             _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s));
         }
 
