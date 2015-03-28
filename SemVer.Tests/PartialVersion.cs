@@ -16,6 +16,16 @@ namespace SemVer.Tests
             Assert.Equal(version.Minor, minor);
             Assert.Equal(version.Patch, patch);
         }
+
+        [Theory]
+        [InlineData("1.2.3", "1.2.3")]
+        [InlineData("1.2", "1.2.0")]
+        [InlineData("1", "1.0.0")]
+        public void TestToZeroVersion(string partialVersion, string fullVersion)
+        {
+            var version = new PartialVersion(partialVersion);
+            Assert.Equal(version.ToZeroVersion(), new Version(fullVersion));
+        }
     }
 }
 
