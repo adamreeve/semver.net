@@ -19,9 +19,10 @@ namespace SemVer
             return _comparatorSets.Any(s => s.Match(version));
         }
 
-        public bool Match(string version)
+        public bool Match(string versionString)
         {
-            return _comparatorSets.Any(s => s.Match(new Version(version)));
+            var version = new Version(versionString);
+            return Match(version);
         }
 
         public IEnumerable<Version> Filter(IEnumerable<Version> versions)
@@ -42,7 +43,7 @@ namespace SemVer
         public string Select(IEnumerable<string> versionStrings)
         {
             var versions = versionStrings.Select(s => new Version(s));
-            var maxVersion = Filter(versions).Max();
+            var maxVersion = Select(versions);
             return maxVersion == null ? null : maxVersion.ToString();
         }
     }
