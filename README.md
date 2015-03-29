@@ -8,6 +8,13 @@ This library aims to implements the
 and the version range specification used by
 npm ([node-semver](https://github.com/npm/node-semver)).
 
+SemVer.NET is available as a [NuGet package](https://www.nuget.org/packages/SemanticVersioning/).
+To install it, run the following command in the Package Manager Console:
+
+```
+Install-Package SemanticVersioning
+```
+
 Here's what currently works and what is still to do:
 
 - [x] Parsing basic version strings with major, minor and patch numbers.
