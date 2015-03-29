@@ -13,8 +13,12 @@ namespace SemVer
 
         public int Patch { get; set; }
 
+        private readonly string _inputString;
+
         public Version(string input)
         {
+            _inputString = input;
+
             string pattern = @"^
                 [v=\s]*
                 (\d+)                    # major version
@@ -50,12 +54,17 @@ namespace SemVer
 
         public override string ToString()
         {
+            return _inputString ?? Clean();
+        }
+
+        public string Clean()
+        {
             return String.Format("{0}.{1}.{2}", Major, Minor, Patch);
         }
 
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return Clean().GetHashCode();
         }
 
         // Implement IEquatable<Version>

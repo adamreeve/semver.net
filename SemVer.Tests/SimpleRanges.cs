@@ -43,5 +43,31 @@ namespace SemVer.Tests
                     new Version("1.2.99"),
                     range.Select(versions));
         }
+
+        [Fact]
+        public void TestStringSelect()
+        {
+            var versions = new [] {
+                "=1.2.7",
+                "v1.2.8",
+                "v1.2.99",
+                "=1.2.6",
+                "v1.3.0",
+                "v1.1.0",
+            };
+            var range = new Range(">=1.2.7 <1.3.0");
+            Assert.Equal("v1.2.99", range.Select(versions));
+        }
+
+        [Fact]
+        public void TestNoMatchSelect()
+        {
+            var versions = new [] {
+                "1.2.7",
+                "1.3.0",
+            };
+            var range = new Range(">=1.2.9 <1.3.0");
+            Assert.Null(range.Select(versions));
+        }
     }
 }

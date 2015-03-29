@@ -19,7 +19,17 @@ namespace SemVer
             return _comparatorSets.Any(s => s.Match(version));
         }
 
+        public bool Match(string version)
+        {
+            return _comparatorSets.Any(s => s.Match(new Version(version)));
+        }
+
         public IEnumerable<Version> Filter(IEnumerable<Version> versions)
+        {
+            return versions.Where(Match);
+        }
+
+        public IEnumerable<string> Filter(IEnumerable<string> versions)
         {
             return versions.Where(Match);
         }
@@ -27,6 +37,13 @@ namespace SemVer
         public Version Select(IEnumerable<Version> versions)
         {
             return Filter(versions).Max();
+        }
+
+        public string Select(IEnumerable<string> versionStrings)
+        {
+            var versions = versionStrings.Select(s => new Version(s));
+            var maxVersion = Filter(versions).Max();
+            return maxVersion == null ? null : maxVersion.ToString();
         }
     }
 }
