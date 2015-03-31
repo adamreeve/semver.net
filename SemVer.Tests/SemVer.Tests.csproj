@@ -51,6 +51,7 @@
     <Compile Include="ParseMajorMinorPatch.cs" />
     <Compile Include="PartialVersion.cs" />
     <Compile Include="PreReleaseComparisons.cs" />
+    <Compile Include="PreReleaseRanges.cs" />
     <Compile Include="SimpleRanges.cs" />
     <Compile Include="VersionComparison.cs" />
   </ItemGroup>
