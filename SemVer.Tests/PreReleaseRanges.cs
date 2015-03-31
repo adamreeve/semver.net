@@ -8,6 +8,7 @@ namespace SemVer.Tests
         [Theory]
         [InlineData(">1.2.3-alpha.3", "1.2.3-alpha.7")]
         [InlineData(">1.2.3-alpha.3", "3.4.5")]
+        [InlineData(">1.2.3-alpha.3 <1.2.4", "1.2.3-alpha.7")]
         public void MatchingPreRelease(string rangeString, string versionString)
         {
             var range = new Range(rangeString);

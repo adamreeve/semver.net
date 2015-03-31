@@ -38,7 +38,20 @@ namespace SemVer
 
         public bool Match(Version version)
         {
-            return _comparators.All(c => c.Match(version));
+            bool isMatching = _comparators.All(c => c.Match(version));
+            if (version.PreRelease != null)
+            {
+                // If the version is a pre-release, then one of the
+                // comparators must have the same version and also include
+                // a pre-release tag.
+                return isMatching && _comparators.Any(c =>
+                        c.Version.PreRelease != null &&
+                        c.Version.BaseVersion() == version.BaseVersion());
+            }
+            else
+            {
+                return isMatching;
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SemVer
 
         public string Build { get {return _build; } }
 
-        static Regex regex = new Regex(@"^
+        private static Regex regex = new Regex(@"^
             [v=\s]*
             (\d+)                    # major version
             \.
@@ -69,6 +69,11 @@ namespace SemVer
             _major = major;
             _minor = minor;
             _patch = patch;
+        }
+
+        public Version BaseVersion()
+        {
+            return new Version(Major, Minor, Patch);
         }
 
         public override string ToString()

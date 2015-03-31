@@ -4,30 +4,30 @@ using System.Text.RegularExpressions;
 
 namespace SemVer
 {
-    public class Comparator : IEquatable<Comparator>
+    internal class Comparator : IEquatable<Comparator>
     {
-        private readonly Operator _comparatorType;
+        public readonly Operator ComparatorType;
 
-        private readonly Version _comparatorVersion;
+        public readonly Version Version;
 
-        private const string Pattern = @"^
+        private static Regex regex = new Regex(@"^
             \s*
             ([=<>]*)  # Comparator type (can be empty)
             (\d.*)    # Version
             \s*
-            $";
+            $",
+            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
 
         public Comparator(string input)
         {
-            var regex = new Regex(Pattern, RegexOptions.IgnorePatternWhitespace);
             var match = regex.Match(input);
             if (!match.Success)
             {
                 throw new ArgumentException(String.Format("Invalid comparator string: {0}", input));
             }
 
-            _comparatorType = ParseComparatorType(match.Groups[1].Value);
-            _comparatorVersion = new Version(match.Groups[2].Value);
+            ComparatorType = ParseComparatorType(match.Groups[1].Value);
+            Version = new Version(match.Groups[2].Value);
         }
 
         public Comparator(Operator comparatorType, Version comparatorVersion)
@@ -36,8 +36,8 @@ namespace SemVer
             {
                 throw new NullReferenceException("Null comparator version");
             }
-            _comparatorType = comparatorType;
-            _comparatorVersion = comparatorVersion;
+            ComparatorType = comparatorType;
+            Version = comparatorVersion;
         }
 
         private static Operator ParseComparatorType(string input)
@@ -62,18 +62,18 @@ namespace SemVer
 
         public bool Match(Version version)
         {
-            switch(_comparatorType)
+            switch(ComparatorType)
             {
                 case(Operator.Equal):
-                    return version == _comparatorVersion;
+                    return version == Version;
                 case(Operator.LessThan):
-                    return version < _comparatorVersion;
+                    return version < Version;
                 case(Operator.LessThanOrEqual):
-                    return version <= _comparatorVersion;
+                    return version <= Version;
                 case(Operator.GreaterThan):
-                    return version > _comparatorVersion;
+                    return version > Version;
                 case(Operator.GreaterThanOrEqual):
-                    return version >= _comparatorVersion;
+                    return version >= Version;
                 default:
                     throw new InvalidOperationException("Comparator type not recognised.");
             }
@@ -91,7 +91,7 @@ namespace SemVer
         public override string ToString()
         {
             string operatorString = null;
-            switch(_comparatorType)
+            switch(ComparatorType)
             {
                 case(Operator.Equal):
                     operatorString = "=";
@@ -111,7 +111,7 @@ namespace SemVer
                 default:
                     throw new InvalidOperationException("Comparator type not recognised.");
             }
-            return String.Format("{0}{1}", operatorString, _comparatorVersion);
+            return String.Format("{0}{1}", operatorString, Version);
         }
 
         public bool Equals(Comparator other)

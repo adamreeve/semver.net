@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace SemVer
 {
-    public static class Desugarer
+    internal static class Desugarer
     {
         // Allows patch-level changes if a minor version is specified
         // on the comparator. Allows minor-level changes if not.
