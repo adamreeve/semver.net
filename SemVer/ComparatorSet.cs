@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SemVer
 {
-    public class ComparatorSet
+    internal class ComparatorSet
     {
         private readonly IEnumerable<Comparator> _comparators;
 
