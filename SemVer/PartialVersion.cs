@@ -14,9 +14,9 @@ namespace SemVer
 
         public int? Patch { get; set; }
 
-        public PartialVersion(string input)
-        {
-            const string pattern = @"^
+        public string PreRelease { get; set; }
+
+        private static Regex regex = new Regex(@"^
                 (\d+|[Xx\*])                     # major version
                 (
                     \.
@@ -25,10 +25,13 @@ namespace SemVer
                         \.
                         (\d+|[Xx\*])             # patch version
                         (\-([0-9A-Za-z\-\.]+))?  # pre-release version
-                        (\+([0-9A-Za-z\-\.]+))?  # build metadata
                     )?
                 )?
-                $";
+                $",
+            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+
+        public PartialVersion(string input)
+        {
 
             string[] xValues = { "X", "x", "*" };
 
@@ -38,7 +41,6 @@ namespace SemVer
                 return;
             }
 
-            var regex = new Regex(pattern, RegexOptions.IgnorePatternWhitespace);
             var match = regex.Match(input);
             if (!match.Success)
             {
@@ -77,6 +79,11 @@ namespace SemVer
                     Patch = Int32.Parse(match.Groups[5].Value);
                 }
             }
+
+            if (match.Groups[6].Success)
+            {
+                PreRelease = match.Groups[6].Value;
+            }
         }
 
         public Version ToZeroVersion()
@@ -84,7 +91,8 @@ namespace SemVer
             return new Version(
                     Major ?? 0,
                     Minor ?? 0,
-                    Patch ?? 0);
+                    Patch ?? 0,
+                    PreRelease);
         }
 
         public bool IsFull()

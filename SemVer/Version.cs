@@ -64,11 +64,14 @@ namespace SemVer
             }
         }
 
-        public Version(int major, int minor, int patch)
+        public Version(int major, int minor, int patch,
+                string preRelease = null, string build = null)
         {
             _major = major;
             _minor = minor;
             _patch = patch;
+            _preRelease = preRelease;
+            _build = build;
         }
 
         public Version BaseVersion()
