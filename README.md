@@ -22,5 +22,6 @@ Here's what currently works and what is still to do:
 - [x] Implement comparator strings, eg >=1.2.3, <1.3
 - [x] Implement simple ranges consisting of comparator sets.
 - [x] Implement desugaring of tilde, caret and star ranges.
-- [ ] Add support for prerelease and build versions.
+- [x] Add support for prerelease and build versions.
+- [ ] Finalise initial API.
 - [ ] Write docs.
