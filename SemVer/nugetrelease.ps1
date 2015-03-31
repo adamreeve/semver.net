@@ -5,6 +5,8 @@
 # version number before making a release.
 # The release notes in the .nuspec file should also be updated.
 
+# The project then needs to be built with the release config
+
 # Build package:
 nuget pack SemVer.csproj -Prop Configuration=Release
 
