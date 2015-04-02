@@ -36,21 +36,21 @@ namespace SemVer
             }
         }
 
-        public bool Match(Version version)
+        public bool IsSatisfied(Version version)
         {
-            bool isMatching = _comparators.All(c => c.Match(version));
+            bool satisfied = _comparators.All(c => c.IsSatisfied(version));
             if (version.PreRelease != null)
             {
                 // If the version is a pre-release, then one of the
                 // comparators must have the same version and also include
                 // a pre-release tag.
-                return isMatching && _comparators.Any(c =>
+                return satisfied && _comparators.Any(c =>
                         c.Version.PreRelease != null &&
                         c.Version.BaseVersion() == version.BaseVersion());
             }
             else
             {
-                return isMatching;
+                return satisfied;
             }
         }
     }

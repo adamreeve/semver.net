@@ -14,37 +14,57 @@ namespace SemVer
             _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s));
         }
 
-        public bool Match(Version version)
+        public bool IsSatisfied(Version version)
         {
-            return _comparatorSets.Any(s => s.Match(version));
+            return _comparatorSets.Any(s => s.IsSatisfied(version));
         }
 
-        public bool Match(string versionString)
+        public bool IsSatisfied(string versionString)
         {
             var version = new Version(versionString);
-            return Match(version);
+            return IsSatisfied(version);
         }
 
-        public IEnumerable<Version> Filter(IEnumerable<Version> versions)
+        public IEnumerable<Version> Satisfying(IEnumerable<Version> versions)
         {
-            return versions.Where(Match);
+            return versions.Where(IsSatisfied);
         }
 
-        public IEnumerable<string> Filter(IEnumerable<string> versions)
+        public IEnumerable<string> Satisfying(IEnumerable<string> versions)
         {
-            return versions.Where(Match);
+            return versions.Where(IsSatisfied);
         }
 
-        public Version Select(IEnumerable<Version> versions)
+        public Version MaxSatisfying(IEnumerable<Version> versions)
         {
-            return Filter(versions).Max();
+            return Satisfying(versions).Max();
         }
 
-        public string Select(IEnumerable<string> versionStrings)
+        public string MaxSatisfying(IEnumerable<string> versionStrings)
         {
             var versions = versionStrings.Select(s => new Version(s));
-            var maxVersion = Select(versions);
+            var maxVersion = MaxSatisfying(versions);
             return maxVersion == null ? null : maxVersion.ToString();
+        }
+
+        // Static convenience methods
+
+        public static bool IsSatisfied(string rangeSpec, string versionString)
+        {
+            var range = new Range(rangeSpec);
+            return range.IsSatisfied(versionString);
+        }
+
+        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions)
+        {
+            var range = new Range(rangeSpec);
+            return range.Satisfying(versions);
+        }
+
+        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings)
+        {
+            var range = new Range(rangeSpec);
+            return range.MaxSatisfying(versionStrings);
         }
     }
 }

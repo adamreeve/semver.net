@@ -60,7 +60,7 @@ namespace SemVer
             }
         }
 
-        public bool Match(Version version)
+        public bool IsSatisfied(Version version)
         {
             switch(ComparatorType)
             {

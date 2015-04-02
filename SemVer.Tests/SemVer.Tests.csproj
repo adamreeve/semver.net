@@ -53,6 +53,7 @@
     <Compile Include="PreReleaseComparisons.cs" />
     <Compile Include="PreReleaseRanges.cs" />
     <Compile Include="SimpleRanges.cs" />
+    <Compile Include="StaticRangeMethods.cs" />
     <Compile Include="VersionComparison.cs" />
   </ItemGroup>
   <ItemGroup>

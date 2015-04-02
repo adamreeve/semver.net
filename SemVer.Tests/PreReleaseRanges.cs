@@ -14,7 +14,7 @@ namespace SemVer.Tests
         {
             var range = new Range(rangeString);
             var version = new Version(versionString);
-            Assert.True(range.Match(version));
+            Assert.True(range.IsSatisfied(version));
         }
 
         [Theory]
@@ -27,7 +27,7 @@ namespace SemVer.Tests
         {
             var range = new Range(rangeString);
             var version = new Version(versionString);
-            Assert.False(range.Match(version));
+            Assert.False(range.IsSatisfied(version));
         }
 
         [Theory]
@@ -38,7 +38,7 @@ namespace SemVer.Tests
         {
             var range = new Range(rangeString);
             var version = new Version(versionString);
-            Assert.True(range.Match(version));
+            Assert.True(range.IsSatisfied(version));
         }
 
         [Theory]
@@ -48,7 +48,7 @@ namespace SemVer.Tests
         {
             var range = new Range(rangeString);
             var version = new Version(versionString);
-            Assert.False(range.Match(version));
+            Assert.False(range.IsSatisfied(version));
         }
     }
 }
