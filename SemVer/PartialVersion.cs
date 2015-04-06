@@ -25,6 +25,7 @@ namespace SemVer
                         \.
                         (\d+|[Xx\*])             # patch version
                         (\-([0-9A-Za-z\-\.]+))?  # pre-release version
+                        (\+([0-9A-Za-z\-\.]+))?  # build version (ignored)
                     )?
                 )?
                 $",
