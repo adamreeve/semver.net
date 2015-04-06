@@ -18,7 +18,7 @@ namespace SemVer.Tests
         {
             var comparatorA = new Comparator(comparatorStringA);
             var comparatorB = new Comparator(comparatorStringB);
-            var comparators = Desugarer.TildeRange(range).ToArray();
+            var comparators = Desugarer.TildeRange(range).Item2;
             Assert.Equal(comparators.Count(), 2);
             Assert.Contains(comparatorA, comparators);
             Assert.Contains(comparatorB, comparators);
@@ -39,7 +39,7 @@ namespace SemVer.Tests
         {
             var comparatorA = new Comparator(comparatorStringA);
             var comparatorB = new Comparator(comparatorStringB);
-            var comparators = Desugarer.CaretRange(range).ToArray();
+            var comparators = Desugarer.CaretRange(range).Item2;
             Assert.Equal(comparators.Count(), 2);
             Assert.Contains(comparatorA, comparators);
             Assert.Contains(comparatorB, comparators);
@@ -54,7 +54,7 @@ namespace SemVer.Tests
         [InlineData("1.2", new string[] { ">=1.2.0", "<1.3.0" })]
         public void TestStarRanges(string range, string[] comparatorStrings)
         {
-            var comparators = Desugarer.StarRange(range).ToArray();
+            var comparators = Desugarer.StarRange(range).Item2;
 
             Assert.Equal(comparators.Count(), comparatorStrings.Count());
 
@@ -72,7 +72,7 @@ namespace SemVer.Tests
         [InlineData("1.2.3 - 2", new string[] { ">=1.2.3", "<3.0.0" })]
         public void TestHyphenRanges(string range, string[] comparatorStrings)
         {
-            var comparators = Desugarer.HyphenRange(range).ToArray();
+            var comparators = Desugarer.HyphenRange(range).Item2;
 
             Assert.Equal(comparators.Count(), comparatorStrings.Count());
 

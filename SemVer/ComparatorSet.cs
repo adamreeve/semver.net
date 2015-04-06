@@ -6,33 +6,51 @@ namespace SemVer
 {
     internal class ComparatorSet
     {
-        private readonly IEnumerable<Comparator> _comparators;
+        private readonly List<Comparator> _comparators;
 
         public ComparatorSet(string spec)
         {
+            _comparators = new List<Comparator> {};
+
             spec = spec.Trim();
-            // A comparator set might be an advanced range specifier
-            // like ~1.2.3, ^1.2, or 1.*.
-            // Check for these first before standard comparator sets:
-            foreach (var desugarer in new Func<string, IEnumerable<Comparator>>[] {
-                    Desugarer.TildeRange,
-                    Desugarer.CaretRange,
-                    Desugarer.HyphenRange,
-                    Desugarer.StarRange,
-                    })
+            int position = 0;
+            int end = spec.Count();
+
+            while (position < end)
             {
-                _comparators = desugarer(spec);
-                if (_comparators != null)
+                int iterStartPosition = position;
+
+                // A comparator set might be an advanced range specifier
+                // like ~1.2.3, ^1.2, or 1.*.
+                // Check for these first before standard comparators:
+                foreach (var desugarer in new Func<string, Tuple<int, Comparator[]>>[] {
+                        Desugarer.HyphenRange,
+                        Desugarer.TildeRange,
+                        Desugarer.CaretRange,
+                        Desugarer.StarRange,
+                        })
                 {
-                    break;
+                    var result = desugarer(spec.Substring(position));
+                    if (result != null)
+                    {
+                        position += result.Item1;
+                        _comparators.AddRange(result.Item2);
+                    }
                 }
-            }
-            if (_comparators == null)
-            {
-                // Standard set of whitespace separated comparators:
-                var comparatorSpecs = spec.Split(
-                        (char[])null, StringSplitOptions.RemoveEmptyEntries);
-                _comparators = comparatorSpecs.Select(s => new Comparator(s));
+
+                // Check for standard comparator with operator and version:
+                var comparatorResult = Comparator.TryParse(spec.Substring(position));
+                if (comparatorResult != null)
+                {
+                    position += comparatorResult.Item1;
+                    _comparators.Add(comparatorResult.Item2);
+                }
+
+                if (position == iterStartPosition)
+                {
+                    // Didn't manage to read any valid comparators
+                    throw new ArgumentException(String.Format("Invalid range specification: \"{0}\"", spec));
+                }
             }
         }
 

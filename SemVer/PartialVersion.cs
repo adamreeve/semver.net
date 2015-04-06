@@ -44,7 +44,7 @@ namespace SemVer
             var match = regex.Match(input);
             if (!match.Success)
             {
-                throw new ArgumentException(String.Format("Invalid version string: {0}", input));
+                throw new ArgumentException(String.Format("Invalid version string: \"{0}\"", input));
             }
 
             if (xValues.Contains(match.Groups[1].Value))

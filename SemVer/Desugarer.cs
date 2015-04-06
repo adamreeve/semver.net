@@ -7,11 +7,13 @@ namespace SemVer
 {
     internal static class Desugarer
     {
+        private const string versionChars = @"[0-9a-zA-Z\-\+\.\*]";
+
         // Allows patch-level changes if a minor version is specified
         // on the comparator. Allows minor-level changes if not.
-        public static IEnumerable<Comparator> TildeRange(string spec)
+        public static Tuple<int, Comparator[]> TildeRange(string spec)
         {
-            const string pattern = @"^~(\S+)$";
+            string pattern = String.Format(@"^~\s*({0}+)", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -36,14 +38,17 @@ namespace SemVer
                 minVersion = version.ToZeroVersion();
                 maxVersion = new Version(version.Major.Value + 1, 0, 0);
             }
-            return minMaxComparators(minVersion, maxVersion);
+
+            return Tuple.Create(
+                    match.Length,
+                    minMaxComparators(minVersion, maxVersion));
         }
 
         // Allows changes that do not modify the left-most non-zero digit
         // in the [major, minor, patch] tuple.
-        public static IEnumerable<Comparator> CaretRange(string spec)
+        public static Tuple<int, Comparator[]> CaretRange(string spec)
         {
-            const string pattern = @"^\^(\S+)$";
+            string pattern = String.Format(@"^\^\s*({0}+)", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -88,12 +93,14 @@ namespace SemVer
                 maxVersion = new Version(0, 0, version.Patch.Value + 1);
             }
 
-            return minMaxComparators(minVersion, maxVersion);
+            return Tuple.Create(
+                    match.Length,
+                    minMaxComparators(minVersion, maxVersion));
         }
 
-        public static IEnumerable<Comparator> HyphenRange(string spec)
+        public static Tuple<int, Comparator[]> HyphenRange(string spec)
         {
-            const string pattern = @"^(\S+)\s+\-\s+(\S+)$";
+            string pattern = String.Format(@"^({0}+)\s+\-\s+({0}+)$", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -144,15 +151,29 @@ namespace SemVer
                 // Fully specified max version
                 maxVersion = maxPartialVersion.ToZeroVersion();
             }
-            return minMaxComparators(minVersion, maxVersion, maxOperator);
+            return Tuple.Create(
+                    match.Length,
+                    minMaxComparators(minVersion, maxVersion, maxOperator));
         }
 
-        public static IEnumerable<Comparator> StarRange(string spec)
+        public static Tuple<int, Comparator[]> StarRange(string spec)
         {
+            // An empty string is a valid range, and means the same as "*"
+
+            string pattern = String.Format(@"^\s*({0}*)", versionChars);
+
+            var regex = new Regex(pattern);
+            var match = regex.Match(spec);
+
+            if (!match.Success)
+            {
+                return null;
+            }
+
             PartialVersion version = null;
             try
             {
-                version = new PartialVersion(spec);
+                version = new PartialVersion(match.Groups[1].Value);
             }
             catch (ArgumentException)
             {
@@ -184,7 +205,9 @@ namespace SemVer
                 maxVersion = new Version(version.Major.Value, version.Minor.Value + 1, 0);
             }
 
-            return minMaxComparators(minVersion, maxVersion);
+            return Tuple.Create(
+                    match.Length,
+                    minMaxComparators(minVersion, maxVersion));
         }
 
         private static Comparator[] minMaxComparators(Version minVersion, Version maxVersion,

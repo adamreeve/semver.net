@@ -10,16 +10,18 @@ namespace SemVer
 
         public readonly Version Version;
 
-        private static Regex regex = new Regex(@"^
+        private const string pattern = @"
             \s*
-            ([=<>]*)  # Comparator type (can be empty)
-            (\d.*)    # Version
+            ([=<>]*)                # Comparator type (can be empty)
             \s*
-            $",
-            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+            ([0-9a-zA-Z\-\+\.\*]+)  # Version (potentially partial version)
+            \s*
+            ";
 
         public Comparator(string input)
         {
+            var regex = new Regex(String.Format("^{0}$", pattern),
+                    RegexOptions.IgnorePatternWhitespace);
             var match = regex.Match(input);
             if (!match.Success)
             {
@@ -27,7 +29,8 @@ namespace SemVer
             }
 
             ComparatorType = ParseComparatorType(match.Groups[1].Value);
-            Version = new Version(match.Groups[2].Value);
+            var partialVersion = new PartialVersion(match.Groups[2].Value);
+            Version = partialVersion.ToZeroVersion();
         }
 
         public Comparator(Operator comparatorType, Version comparatorVersion)
@@ -38,6 +41,20 @@ namespace SemVer
             }
             ComparatorType = comparatorType;
             Version = comparatorVersion;
+        }
+
+        public static Tuple<int, Comparator> TryParse(string input)
+        {
+            var regex = new Regex(String.Format("^{0}", pattern),
+                    RegexOptions.IgnorePatternWhitespace);
+
+            var match = regex.Match(input);
+
+            return match.Success ?
+                Tuple.Create(
+                    match.Length,
+                    new Comparator(match.Value))
+                : null;
         }
 
         private static Operator ParseComparatorType(string input)
