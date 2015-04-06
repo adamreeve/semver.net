@@ -97,7 +97,19 @@ namespace SemVer
 
         public override int GetHashCode()
         {
-            return Clean().GetHashCode();
+            // The build version isn't included when calculating the hash,
+            // as two versions with equal properties except for the build
+            // are considered equal.
+
+            unchecked  // Allow integer overflow with wrapping
+            {
+                int hash = 17;
+                hash = hash * 23 + Major.GetHashCode();
+                hash = hash * 23 + Minor.GetHashCode();
+                hash = hash * 23 + Patch.GetHashCode();
+                hash = hash * 23 + PreRelease.GetHashCode();
+                return hash;
+            }
         }
 
         // Implement IEquatable<Version>
