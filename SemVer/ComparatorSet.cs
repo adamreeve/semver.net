@@ -13,6 +13,11 @@ namespace SemVer
             _comparators = new List<Comparator> {};
 
             spec = spec.Trim();
+            if (spec == "")
+            {
+                spec = "*";
+            }
+
             int position = 0;
             int end = spec.Count();
 
