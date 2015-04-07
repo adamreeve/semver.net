@@ -17,6 +17,7 @@ namespace SemVer
         public string PreRelease { get; set; }
 
         private static Regex regex = new Regex(@"^
+                [v=\s]*
                 (\d+|[Xx\*])                     # major version
                 (
                     \.
