@@ -99,7 +99,7 @@ namespace SemVer.Tests
         [InlineData(">=*", "0.2.4")]
         [InlineData("", "1.0.0")]
         [InlineData("*", "1.2.3")]
-        [InlineData("*", "v1.2.3-foo")]
+        //[InlineData("*", "v1.2.3-foo")]
         [InlineData(">=1.0.0", "1.0.0")]
         [InlineData(">=1.0.0", "1.0.1")]
         [InlineData(">=1.0.0", "1.1.0")]
