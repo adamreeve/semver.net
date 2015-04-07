@@ -26,13 +26,13 @@ namespace SemVer
 
         private static Regex regex = new Regex(@"^
             [v=\s]*
-            (\d+)                    # major version
+            (\d+)                     # major version
             \.
-            (\d+)                    # minor version
+            (\d+)                     # minor version
             \.
-            (\d+)                    # patch version
-            (\-([0-9A-Za-z\-\.]+))?  # pre-release version
-            (\+([0-9A-Za-z\-\.]+))?  # build metadata
+            (\d+)                     # patch version
+            (\-?([0-9A-Za-z\-\.]+))?  # pre-release version
+            (\+([0-9A-Za-z\-\.]+))?   # build metadata
             \s*
             $",
             RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);

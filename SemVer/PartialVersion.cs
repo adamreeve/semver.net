@@ -18,15 +18,15 @@ namespace SemVer
 
         private static Regex regex = new Regex(@"^
                 [v=\s]*
-                (\d+|[Xx\*])                     # major version
+                (\d+|[Xx\*])                      # major version
                 (
                     \.
-                    (\d+|[Xx\*])                 # minor version
+                    (\d+|[Xx\*])                  # minor version
                     (
                         \.
-                        (\d+|[Xx\*])             # patch version
-                        (\-([0-9A-Za-z\-\.]+))?  # pre-release version
-                        (\+([0-9A-Za-z\-\.]+))?  # build version (ignored)
+                        (\d+|[Xx\*])              # patch version
+                        (\-?([0-9A-Za-z\-\.]+))?  # pre-release version
+                        (\+([0-9A-Za-z\-\.]+))?   # build version (ignored)
                     )?
                 )?
                 $",
