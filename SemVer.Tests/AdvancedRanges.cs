@@ -155,6 +155,8 @@ namespace SemVer.Tests
         [InlineData("<=0.7.x", "0.7.2")]
         [InlineData(">=0.7.x", "0.7.2")]
         [InlineData("<=0.7.x", "0.6.2")]
+        [InlineData(">0.7.x", "0.8.2")]
+        [InlineData(">7.x", "8.2.0")]
         [InlineData("~1.2.1 >=1.2.3", "1.2.3")]
         [InlineData("~1.2.1 =1.2.3", "1.2.3")]
         [InlineData("~1.2.1 1.2.3", "1.2.3")]

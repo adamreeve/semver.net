@@ -30,7 +30,63 @@ namespace SemVer
 
             ComparatorType = ParseComparatorType(match.Groups[1].Value);
             var partialVersion = new PartialVersion(match.Groups[2].Value);
-            Version = partialVersion.ToZeroVersion();
+
+            if (!partialVersion.IsFull())
+            {
+                // For Operator.Equal, partial versions are handled by the StarRange
+                // desugarer, and desugar to multiple comparators.
+
+                switch (ComparatorType)
+                {
+                    // For <= with a partial version, eg. <=1.2.x, this
+                    // means the same as < 1.3.0, and <=1.x means <2.0
+                    case Operator.LessThanOrEqual:
+                        ComparatorType = Operator.LessThan;
+                        if (!partialVersion.Major.HasValue)
+                        {
+                            // <=* means >=0.0.0
+                            ComparatorType = Operator.GreaterThanOrEqual;
+                            Version = new Version(0, 0, 0);
+                        }
+                        else if (!partialVersion.Minor.HasValue)
+                        {
+                            Version = new Version(partialVersion.Major.Value + 1, 0, 0);
+                        }
+                        else
+                        {
+                            Version = new Version(partialVersion.Major.Value, partialVersion.Minor.Value + 1, 0);
+                        }
+                        break;
+                    case Operator.GreaterThan:
+                        ComparatorType = Operator.GreaterThanOrEqual;
+                        if (!partialVersion.Major.HasValue)
+                        {
+                            // >* is unsatisfiable, so use <0.0.0
+                            ComparatorType = Operator.LessThan;
+                            Version = new Version(0, 0, 0);
+                        }
+                        else if (!partialVersion.Minor.HasValue)
+                        {
+                            // eg. >1.x -> >=2.0
+                            Version = new Version(partialVersion.Major.Value + 1, 0, 0);
+                        }
+                        else
+                        {
+                            // eg. >1.2.x -> >=1.3
+                            Version = new Version(partialVersion.Major.Value, partialVersion.Minor.Value + 1, 0);
+                        }
+                        break;
+                    default:
+                        // <1.2.x means <1.2.0
+                        // >=1.2.x means >=1.2.0
+                        Version = partialVersion.ToZeroVersion();
+                        break;
+                }
+            }
+            else
+            {
+                Version = partialVersion.ToZeroVersion();
+            }
         }
 
         public Comparator(Operator comparatorType, Version comparatorVersion)
