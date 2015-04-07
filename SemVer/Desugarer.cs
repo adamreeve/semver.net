@@ -13,7 +13,7 @@ namespace SemVer
         // on the comparator. Allows minor-level changes if not.
         public static Tuple<int, Comparator[]> TildeRange(string spec)
         {
-            string pattern = String.Format(@"^~\s*({0}+)", versionChars);
+            string pattern = String.Format(@"^\s*~\s*({0}+)\s*", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -48,7 +48,7 @@ namespace SemVer
         // in the [major, minor, patch] tuple.
         public static Tuple<int, Comparator[]> CaretRange(string spec)
         {
-            string pattern = String.Format(@"^\^\s*({0}+)", versionChars);
+            string pattern = String.Format(@"^\s*\^\s*({0}+)\s*", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -100,7 +100,7 @@ namespace SemVer
 
         public static Tuple<int, Comparator[]> HyphenRange(string spec)
         {
-            string pattern = String.Format(@"^({0}+)\s+\-\s+({0}+)$", versionChars);
+            string pattern = String.Format(@"^\s*({0}+)\s+\-\s+({0}+)\s*", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
@@ -159,7 +159,7 @@ namespace SemVer
         public static Tuple<int, Comparator[]> StarRange(string spec)
         {
             // Also match with an equals sign, eg. "=0.7.x"
-            string pattern = String.Format(@"^\s*=?\s*({0}+)", versionChars);
+            string pattern = String.Format(@"^\s*=?\s*({0}+)\s*", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);
