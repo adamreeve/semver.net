@@ -158,9 +158,8 @@ namespace SemVer
 
         public static Tuple<int, Comparator[]> StarRange(string spec)
         {
-            // An empty string is a valid range, and means the same as "*"
-
-            string pattern = String.Format(@"^\s*({0}*)", versionChars);
+            // Also match with an equals sign, eg. "=0.7.x"
+            string pattern = String.Format(@"^\s*=?\s*({0}+)", versionChars);
 
             var regex = new Regex(pattern);
             var match = regex.Match(spec);

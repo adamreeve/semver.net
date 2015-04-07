@@ -49,7 +49,7 @@ namespace SemVer.Tests
         [InlineData("*", new string[] { ">=0.0.0" })]
         [InlineData("1.x", new string[] { ">=1.0.0", "<2.0.0" })]
         [InlineData("1.2.x", new string[] { ">=1.2.0", "<1.3.0" })]
-        [InlineData("", new string[] { ">=0.0.0" })]
+        [InlineData("=1.2.x", new string[] { ">=1.2.0", "<1.3.0" })]
         [InlineData("1", new string[] { ">=1.0.0", "<2.0.0" })]
         [InlineData("1.2", new string[] { ">=1.2.0", "<1.3.0" })]
         public void TestStarRanges(string range, string[] comparatorStrings)
