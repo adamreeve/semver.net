@@ -182,5 +182,74 @@ namespace SemVer.Tests
             var version = new Version(versionString);
             Assert.True(range.IsSatisfied(version));
         }
+
+        [Theory]
+        [InlineData("1.0.0 - 2.0.0", "2.2.3")]
+        [InlineData("1.2.3+asdf - 2.4.3+asdf", "1.2.3-pre.2")]
+        [InlineData("1.2.3+asdf - 2.4.3+asdf", "2.4.3-alpha")]
+        [InlineData("^1.2.3+build", "2.0.0")]
+        [InlineData("^1.2.3+build", "1.2.0")]
+        [InlineData("^1.2.3", "1.2.3-pre")]
+        [InlineData("^1.2", "1.2.0-pre")]
+        [InlineData(">1.2", "1.3.0-beta")]
+        [InlineData("<=1.2.3", "1.2.3-beta")]
+        [InlineData("^1.2.3", "1.2.3-beta")]
+        [InlineData("=0.7.x", "0.7.0-asdf")]
+        [InlineData(">=0.7.x", "0.7.0-asdf")]
+        [InlineData("1", "1.0.0beta")]
+        [InlineData("<1", "1.0.0beta")]
+        [InlineData("< 1", "1.0.0beta")]
+        [InlineData("1.0.0", "1.0.1")]
+        [InlineData(">=1.0.0", "0.0.0")]
+        [InlineData(">=1.0.0", "0.0.1")]
+        [InlineData(">=1.0.0", "0.1.0")]
+        [InlineData(">1.0.0", "0.0.1")]
+        [InlineData(">1.0.0", "0.1.0")]
+        [InlineData("<=2.0.0", "3.0.0")]
+        [InlineData("<=2.0.0", "2.9999.9999")]
+        [InlineData("<=2.0.0", "2.2.9")]
+        [InlineData("<2.0.0", "2.9999.9999")]
+        [InlineData("<2.0.0", "2.2.9")]
+        [InlineData(">=0.1.97", "v0.1.93")]
+        [InlineData(">=0.1.97", "0.1.93")]
+        [InlineData("0.1.20 || 1.2.4", "1.2.3")]
+        [InlineData(">=0.2.3 || <0.0.1", "0.0.3")]
+        [InlineData(">=0.2.3 || <0.0.1", "0.2.2")]
+        [InlineData("2.x.x", "1.1.3")]
+        [InlineData("2.x.x", "3.1.3")]
+        [InlineData("1.2.x", "1.3.3")]
+        [InlineData("1.2.x || 2.x", "3.1.3")]
+        [InlineData("1.2.x || 2.x", "1.1.3")]
+        [InlineData("2.*.*", "1.1.3")]
+        [InlineData("2.*.*", "3.1.3")]
+        [InlineData("1.2.*", "1.3.3")]
+        [InlineData("1.2.* || 2.*", "3.1.3")]
+        [InlineData("1.2.* || 2.*", "1.1.3")]
+        [InlineData("2", "1.1.2")]
+        [InlineData("2.3", "2.4.1")]
+        [InlineData("~2.4", "2.5.0")] // >=2.4.0 <2.5.0
+        [InlineData("~2.4", "2.3.9")]
+        [InlineData("~1", "0.2.3")] // >=1.0.0 <2.0.0
+        [InlineData("~1.0", "1.1.0")] // >=1.0.0 <1.1.0
+        [InlineData("<1", "1.0.0")]
+        [InlineData(">=1.2", "1.1.1")]
+        [InlineData("1", "2.0.0beta")]
+        [InlineData("~v0.5.4-beta", "0.5.4-alpha")]
+        [InlineData("=0.7.x", "0.8.2")]
+        [InlineData(">=0.7.x", "0.6.2")]
+        [InlineData("<0.7.x", "0.7.2")]
+        [InlineData("<1.2.3", "1.2.3-beta")]
+        [InlineData("=1.2.3", "1.2.3-beta")]
+        [InlineData(">1.2", "1.2.8")]
+        [InlineData("^1.2.3", "2.0.0-alpha")]
+        [InlineData("^1.2.3", "1.2.2")]
+        [InlineData("^1.2", "1.1.9")]
+        [InlineData("^1.2.3", "2.0.0-pre")]
+        public void UnsatisfiedRanges(string rangeString, string versionString)
+        {
+            var range = new Range(rangeString);
+            var version = new Version(versionString);
+            Assert.False(range.IsSatisfied(version));
+        }
     }
 }
