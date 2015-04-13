@@ -99,7 +99,7 @@ namespace SemVer.Tests
         [InlineData(">=*", "0.2.4")]
         [InlineData("", "1.0.0")]
         [InlineData("*", "1.2.3")]
-        //[InlineData("*", "v1.2.3-foo")]
+        [InlineData("*", "v1.2.3")]
         [InlineData(">=1.0.0", "1.0.0")]
         [InlineData(">=1.0.0", "1.0.1")]
         [InlineData(">=1.0.0", "1.1.0")]
@@ -245,6 +245,7 @@ namespace SemVer.Tests
         [InlineData("^1.2.3", "1.2.2")]
         [InlineData("^1.2", "1.1.9")]
         [InlineData("^1.2.3", "2.0.0-pre")]
+        [InlineData("*", "v1.2.3-foo")]
         public void UnsatisfiedRanges(string rangeString, string versionString)
         {
             var range = new Range(rangeString);
