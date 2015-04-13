@@ -32,7 +32,7 @@ namespace SemVer
 
         public IEnumerable<string> Satisfying(IEnumerable<string> versions, bool loose=false)
         {
-            return versions.Where(IsSatisfied);
+            return versions.Where(v => IsSatisfied(v, loose));
         }
 
         public Version MaxSatisfying(IEnumerable<Version> versions)
@@ -42,7 +42,7 @@ namespace SemVer
 
         public string MaxSatisfying(IEnumerable<string> versionStrings, bool loose=false)
         {
-            var versions = versionStrings.Select(s => new Version(s));
+            var versions = ValidVersions(versionStrings, loose);
             var maxVersion = MaxSatisfying(versions);
             return maxVersion == null ? null : maxVersion.ToString();
         }
@@ -65,6 +65,25 @@ namespace SemVer
         {
             var range = new Range(rangeSpec);
             return range.MaxSatisfying(versionStrings);
+        }
+
+        private IEnumerable<Version> ValidVersions(IEnumerable<string> versionStrings, bool loose)
+        {
+            foreach (var v in versionStrings)
+            {
+                Version version = null;
+
+                try
+                {
+                    version = new Version(v, loose);
+                }
+                catch (ArgumentException) { } // Skip
+
+                if (version != null)
+                {
+                    yield return version;
+                }
+            }
         }
     }
 }

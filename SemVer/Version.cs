@@ -24,7 +24,20 @@ namespace SemVer
 
         public string Build { get {return _build; } }
 
-        private static Regex regex = new Regex(@"^
+        private static Regex strictRegex = new Regex(@"^
+            \s*v?
+            (\d+)                     # major version
+            \.
+            (\d+)                     # minor version
+            \.
+            (\d+)                     # patch version
+            (\-([0-9A-Za-z\-\.]+))?  # pre-release version
+            (\+([0-9A-Za-z\-\.]+))?   # build metadata
+            \s*
+            $",
+            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+
+        private static Regex looseRegex = new Regex(@"^
             [v=\s]*
             (\d+)                     # major version
             \.
@@ -40,6 +53,8 @@ namespace SemVer
         public Version(string input, bool loose=false)
         {
             _inputString = input;
+
+            var regex = loose ? looseRegex : strictRegex;
 
             var match = regex.Match(input);
             if (!match.Success)
