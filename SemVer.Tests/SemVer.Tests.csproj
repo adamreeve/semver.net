@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedRanges.cs" />
+    <Compile Include="LooseMode.cs" />
     <Compile Include="ParseMajorMinorPatch.cs" />
     <Compile Include="PartialVersion.cs" />
     <Compile Include="PreReleaseComparisons.cs" />

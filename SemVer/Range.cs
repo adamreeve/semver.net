@@ -8,7 +8,7 @@ namespace SemVer
     {
         private readonly IEnumerable<ComparatorSet> _comparatorSets;
 
-        public Range(string rangeSpec)
+        public Range(string rangeSpec, bool loose=false)
         {
             var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.None);
             _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s));
@@ -19,7 +19,7 @@ namespace SemVer
             return _comparatorSets.Any(s => s.IsSatisfied(version));
         }
 
-        public bool IsSatisfied(string versionString)
+        public bool IsSatisfied(string versionString, bool loose=false)
         {
             var version = new Version(versionString);
             return IsSatisfied(version);
@@ -30,7 +30,7 @@ namespace SemVer
             return versions.Where(IsSatisfied);
         }
 
-        public IEnumerable<string> Satisfying(IEnumerable<string> versions)
+        public IEnumerable<string> Satisfying(IEnumerable<string> versions, bool loose=false)
         {
             return versions.Where(IsSatisfied);
         }
@@ -40,7 +40,7 @@ namespace SemVer
             return Satisfying(versions).Max();
         }
 
-        public string MaxSatisfying(IEnumerable<string> versionStrings)
+        public string MaxSatisfying(IEnumerable<string> versionStrings, bool loose=false)
         {
             var versions = versionStrings.Select(s => new Version(s));
             var maxVersion = MaxSatisfying(versions);
@@ -49,19 +49,19 @@ namespace SemVer
 
         // Static convenience methods
 
-        public static bool IsSatisfied(string rangeSpec, string versionString)
+        public static bool IsSatisfied(string rangeSpec, string versionString, bool loose=false)
         {
             var range = new Range(rangeSpec);
             return range.IsSatisfied(versionString);
         }
 
-        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions)
+        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions, bool loose=false)
         {
             var range = new Range(rangeSpec);
             return range.Satisfying(versions);
         }
 
-        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings)
+        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings, bool loose=false)
         {
             var range = new Range(rangeSpec);
             return range.MaxSatisfying(versionStrings);

@@ -37,7 +37,7 @@ namespace SemVer
             $",
             RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
 
-        public Version(string input)
+        public Version(string input, bool loose=false)
         {
             _inputString = input;
 
