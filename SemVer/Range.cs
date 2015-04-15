@@ -21,8 +21,15 @@ namespace SemVer
 
         public bool IsSatisfied(string versionString, bool loose=false)
         {
-            var version = new Version(versionString);
-            return IsSatisfied(version);
+            try
+            {
+                var version = new Version(versionString, loose);
+                return IsSatisfied(version);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Version> Satisfying(IEnumerable<Version> versions)
