@@ -16,10 +16,11 @@ namespace SemVer.Tests
         [InlineData("1.2.3-01", "1.2.3-1")]
         public void Versions(string looseVersionString, string strictVersionString)
         {
-            var looseVersion = new Version(looseVersionString);
+            var looseVersion = new Version(looseVersionString, true);
 
             // Loose version is equivalent to strict version
             var strictVersion = new Version(strictVersionString);
+            Assert.Equal(strictVersion.Clean(), looseVersion.Clean());
             Assert.Equal(strictVersion, looseVersion);
 
             // Loose version should be invalid in strict mode
@@ -33,7 +34,7 @@ namespace SemVer.Tests
             var range = new Range(rangeString);
 
             // Version doesn't satisfy range in strict mode
-            Assert.False(range.IsSatisfied(versionString));
+            Assert.False(range.IsSatisfied(versionString, false));
 
             // Version satisfies range in loose mode
             Assert.True(range.IsSatisfied(versionString, true));
