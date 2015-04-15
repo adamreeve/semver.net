@@ -50,8 +50,8 @@ namespace SemVer.Tests
         // Build number has no effect on order
         public void EqualExceptBuild()
         {
-            var a = new Version("1.2.3-alpha.01+build.99");
-            var b = new Version("1.2.3-alpha.01+build.1");
+            var a = new Version("1.2.3-alpha.1+build.99");
+            var b = new Version("1.2.3-alpha.1+build.1");
             Assert.True(a == b);
         }
     }

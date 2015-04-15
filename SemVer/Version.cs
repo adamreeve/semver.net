@@ -70,7 +70,14 @@ namespace SemVer
 
             if (match.Groups[4].Success)
             {
-                _preRelease = match.Groups[5].Value;
+                var inputPreRelease = match.Groups[5].Value;
+                var cleanedPreRelease = PreReleaseVersion.Clean(inputPreRelease);
+                if (!loose && inputPreRelease != cleanedPreRelease)
+                {
+                    throw new ArgumentException(String.Format(
+                                "Invalid pre-release version: {0}", inputPreRelease));
+                }
+                _preRelease = cleanedPreRelease;
             }
 
             if (match.Groups[6].Success)

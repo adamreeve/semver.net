@@ -23,7 +23,7 @@ namespace SemVer
             }
             else
             {
-                foreach (var c in IdentifierComparisons(a.Split('.'), b.Split('.')))
+                foreach (var c in IdentifierComparisons(Identifiers(a), Identifiers(b)))
                 {
                     if (c != 0)
                     {
@@ -34,8 +34,48 @@ namespace SemVer
             }
         }
 
+        public static string Clean(string input)
+        {
+            var identifierStrings = Identifiers(input).Select(i => i.Clean());
+            return String.Join(".", identifierStrings.ToArray());
+        }
+
+        private class Identifier
+        {
+            public bool IsNumeric { get; set; }
+            public int IntValue { get; set; }
+            public string Value { get; set; }
+
+            public Identifier(string input)
+            {
+                Value = input;
+                SetNumeric();
+            }
+
+            public string Clean()
+            {
+                return IsNumeric ? IntValue.ToString() : Value;
+            }
+
+            private void SetNumeric()
+            {
+                int x;
+                bool couldParse = Int32.TryParse(Value, out x);
+                IsNumeric = couldParse && x >= 0;
+                IntValue = x;
+            }
+        }
+
+        private static IEnumerable<Identifier> Identifiers(string input)
+        {
+            foreach (var identifier in input.Split('.'))
+            {
+                yield return new Identifier(identifier);
+            }
+        }
+
         private static IEnumerable<int> IdentifierComparisons(
-                IEnumerable<string> aIdentifiers, IEnumerable<string> bIdentifiers)
+                IEnumerable<Identifier> aIdentifiers, IEnumerable<Identifier> bIdentifiers)
         {
             foreach (var identifiers in ZipIdentifiers(aIdentifiers, bIdentifiers))
             {
@@ -55,21 +95,19 @@ namespace SemVer
                 }
                 else
                 {
-                    bool aIsNumeric = IsNumeric(a);
-                    bool bIsNumeric = IsNumeric(b);
-                    if (aIsNumeric && bIsNumeric)
+                    if (a.IsNumeric && b.IsNumeric)
                     {
-                        yield return Int32.Parse(a).CompareTo(Int32.Parse(b));
+                        yield return a.IntValue.CompareTo(b.IntValue);
                     }
-                    else if (!aIsNumeric && !bIsNumeric)
+                    else if (!a.IsNumeric && !b.IsNumeric)
                     {
-                        yield return String.CompareOrdinal(a, b);
+                        yield return String.CompareOrdinal(a.Value, b.Value);
                     }
-                    else if (aIsNumeric && !bIsNumeric)
+                    else if (a.IsNumeric && !b.IsNumeric)
                     {
                         yield return -1;
                     }
-                    else // !aIsNumeric && bIsNumeric
+                    else // !a.IsNumeric && b.IsNumeric
                     {
                         yield return 1;
                     }
@@ -77,21 +115,10 @@ namespace SemVer
             }
         }
 
-        private static bool IsNumeric(string identifier)
-        {
-            if (identifier.StartsWith("0"))
-            {
-                return false;
-            }
-            int x;
-            bool couldParse = Int32.TryParse(identifier, out x);
-            return couldParse && x >= 0;
-        }
-
         // Zip identifier sets until both have been exhausted, returning null
         // for identifier components not in one set.
-        private static IEnumerable<Tuple<string, string>> ZipIdentifiers(
-                IEnumerable<string> first, IEnumerable<string> second)
+        private static IEnumerable<Tuple<Identifier, Identifier>> ZipIdentifiers(
+                IEnumerable<Identifier> first, IEnumerable<Identifier> second)
         {
             using (var ie1 = first.GetEnumerator())
             using (var ie2 = second.GetEnumerator())
@@ -104,12 +131,12 @@ namespace SemVer
                     }
                     else
                     {
-                        yield return Tuple.Create<string, string>(ie1.Current, null);
+                        yield return Tuple.Create<Identifier, Identifier>(ie1.Current, null);
                     }
                 }
                 while (ie2.MoveNext())
                 {
-                    yield return Tuple.Create<string, string>(null, ie2.Current);
+                    yield return Tuple.Create<Identifier, Identifier>(null, ie2.Current);
                 }
             }
         }
