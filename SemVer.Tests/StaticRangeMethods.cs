@@ -10,10 +10,10 @@ namespace SemVer.Tests
         public void TestMaxSatisfying()
         {
             var versions = new [] {
-                "=1.2.7",
+                "1.2.7",
                 "v1.2.8",
                 "v1.2.99",
-                "=1.2.6",
+                "1.2.6",
                 "v1.3.0",
                 "v1.1.0",
             };
@@ -25,16 +25,16 @@ namespace SemVer.Tests
         public void TestSatisfying()
         {
             var versions = new [] {
-                "=1.2.7",
+                "1.2.7",
                 "v1.2.8",
                 "v1.2.99",
-                "=1.2.6",
+                "1.2.6",
                 "v1.3.0",
                 "v1.1.0",
             };
             var satisfying = Range.Satisfying(">=1.2.7 <1.3.0", versions).ToArray();
             Assert.Equal(3, satisfying.Count());
-            Assert.Contains("=1.2.7", satisfying);
+            Assert.Contains("1.2.7", satisfying);
             Assert.Contains("v1.2.8", satisfying);
             Assert.Contains("v1.2.99", satisfying);
         }

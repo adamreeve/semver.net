@@ -6,50 +6,50 @@ namespace SemVer.Tests
     public class ParseMajorMinorPatch
     {
         [Theory]
-        [InlineData("1.2.3", 1)]
-        [InlineData(" 1.2.3 ", 1)]
-        [InlineData(" 2.2.3-4 ", 2)]
-        [InlineData(" 3.2.3-pre ", 3)]
-        [InlineData("v5.2.3", 5)]
-        [InlineData(" v8.2.3 ", 8)]
-        [InlineData("\t13.2.3", 13)]
-        [InlineData("=21.2.3", 21)]
-        [InlineData("v=34.2.3", 34)]
-        public void ParseMajorVersion(string versionString, int majorVersion)
+        [InlineData("1.2.3", 1, false)]
+        [InlineData(" 1.2.3 ", 1, false)]
+        [InlineData(" 2.2.3-4 ", 2, false)]
+        [InlineData(" 3.2.3-pre ", 3, false)]
+        [InlineData("v5.2.3", 5, false)]
+        [InlineData(" v8.2.3 ", 8, false)]
+        [InlineData("\t13.2.3", 13, false)]
+        [InlineData("=21.2.3", 21, true)]
+        [InlineData("v=34.2.3", 34, true)]
+        public void ParseMajorVersion(string versionString, int majorVersion, bool loose)
         {
-            var version = new Version(versionString);
+            var version = new Version(versionString, loose);
             Assert.Equal(version.Major, majorVersion);
         }
 
         [Theory]
-        [InlineData("1.2.3", 2)]
-        [InlineData(" 1.2.3 ", 2)]
-        [InlineData(" 2.2.3-4 ", 2)]
-        [InlineData(" 3.2.3-pre ", 2)]
-        [InlineData("v5.2.3", 2)]
-        [InlineData(" v8.2.3 ", 2)]
-        [InlineData("\t13.2.3", 2)]
-        [InlineData("=21.2.3", 2)]
-        [InlineData("v=34.2.3", 2)]
-        public void ParseMinorVersion(string versionString, int minorVersion)
+        [InlineData("1.2.3", 2, false)]
+        [InlineData(" 1.2.3 ", 2, false)]
+        [InlineData(" 2.2.3-4 ", 2, false)]
+        [InlineData(" 3.2.3-pre ", 2, false)]
+        [InlineData("v5.2.3", 2, false)]
+        [InlineData(" v8.2.3 ", 2, false)]
+        [InlineData("\t13.2.3", 2, false)]
+        [InlineData("=21.2.3", 2, true)]
+        [InlineData("v=34.2.3", 2, true)]
+        public void ParseMinorVersion(string versionString, int minorVersion, bool loose)
         {
-            var version = new Version(versionString);
+            var version = new Version(versionString, loose);
             Assert.Equal(version.Minor, minorVersion);
         }
 
         [Theory]
-        [InlineData("1.2.3", 3)]
-        [InlineData(" 1.2.3 ", 3)]
-        [InlineData(" 2.2.3-4 ", 3)]
-        [InlineData(" 3.2.3-pre ", 3)]
-        [InlineData("v5.2.3", 3)]
-        [InlineData(" v8.2.3 ", 3)]
-        [InlineData("\t13.2.3", 3)]
-        [InlineData("=21.2.3", 3)]
-        [InlineData("v=34.2.3", 3)]
-        public void ParsePatchVersion(string versionString, int patchVersion)
+        [InlineData("1.2.3", 3, false)]
+        [InlineData(" 1.2.3 ", 3, false)]
+        [InlineData(" 2.2.3-4 ", 3, false)]
+        [InlineData(" 3.2.3-pre ", 3, false)]
+        [InlineData("v5.2.3", 3, false)]
+        [InlineData(" v8.2.3 ", 3, false)]
+        [InlineData("\t13.2.3", 3, false)]
+        [InlineData("=21.2.3", 3, true)]
+        [InlineData("v=34.2.3", 3, true)]
+        public void ParsePatchVersion(string versionString, int patchVersion, bool loose)
         {
-            var version = new Version(versionString);
+            var version = new Version(versionString, loose);
             Assert.Equal(version.Patch, patchVersion);
         }
     }
