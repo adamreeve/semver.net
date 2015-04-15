@@ -84,7 +84,7 @@ namespace SemVer
 
             if (match.Groups[6].Success)
             {
-                PreRelease = match.Groups[6].Value;
+                PreRelease = match.Groups[7].Value;
             }
         }
 

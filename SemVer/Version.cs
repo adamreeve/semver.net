@@ -31,7 +31,7 @@ namespace SemVer
             (\d+)                     # minor version
             \.
             (\d+)                     # patch version
-            (\-([0-9A-Za-z\-\.]+))?  # pre-release version
+            (\-([0-9A-Za-z\-\.]+))?   # pre-release version
             (\+([0-9A-Za-z\-\.]+))?   # build metadata
             \s*
             $",
@@ -70,12 +70,12 @@ namespace SemVer
 
             if (match.Groups[4].Success)
             {
-                _preRelease = match.Groups[4].Value;
+                _preRelease = match.Groups[5].Value;
             }
 
-            if (match.Groups[5].Success)
+            if (match.Groups[6].Success)
             {
-                _build = match.Groups[5].Value;
+                _build = match.Groups[7].Value;
             }
         }
 
