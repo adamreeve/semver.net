@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace SemVer
 {
+    /// <summary>
+    /// A semantic version.
+    /// </summary>
     public class Version : IComparable<Version>, IEquatable<Version>
     {
         private readonly string _inputString;
@@ -14,14 +17,29 @@ namespace SemVer
         private readonly string _preRelease;
         private readonly string _build;
 
+        /// <summary>
+        /// The major component of the version.
+        /// </summary>
         public int Major { get { return _major; } }
 
+        /// <summary>
+        /// The minor component of the version.
+        /// </summary>
         public int Minor { get { return _minor; } }
 
+        /// <summary>
+        /// The patch component of the version.
+        /// </summary>
         public int Patch { get { return _patch; } }
 
+        /// <summary>
+        /// The pre-release string, or null for no pre-release version.
+        /// </summary>
         public string PreRelease { get { return _preRelease; } }
 
+        /// <summary>
+        /// The build string, or null for no build version.
+        /// </summary>
         public string Build { get {return _build; } }
 
         private static Regex strictRegex = new Regex(@"^
@@ -50,6 +68,12 @@ namespace SemVer
             $",
             RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
 
+        /// <summary>
+        /// Construct a new semantic version from a version string.
+        /// </summary>
+        /// <param name="input">The version string.</param>
+        /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <exception cref="System.ArgumentException">Thrown when the version string is invalid.</exception>
         public Version(string input, bool loose=false)
         {
             _inputString = input;
@@ -86,6 +110,14 @@ namespace SemVer
             }
         }
 
+        /// <summary>
+        /// Construct a new semantic version from version components.
+        /// </summary>
+        /// <param name="major">The major component of the version.</param>
+        /// <param name="minor">The minor component of the version.</param>
+        /// <param name="patch">The patch component of the version.</param>
+        /// <param name="preRelease">The pre-release version string, or null for no pre-release version.</param>
+        /// <param name="build">The build version string, or null for no build version.</param>
         public Version(int major, int minor, int patch,
                 string preRelease = null, string build = null)
         {
@@ -96,16 +128,29 @@ namespace SemVer
             _build = build;
         }
 
+        /// <summary>
+        /// Returns this version without any pre-release or build version.
+        /// </summary>
+        /// <returns>The base version</returns>
         public Version BaseVersion()
         {
             return new Version(Major, Minor, Patch);
         }
 
+        /// <summary>
+        /// Returns the original input string the version was constructed from or
+        /// the cleaned version if the version was constructed from version components.
+        /// </summary>
+        /// <returns>The version string</returns>
         public override string ToString()
         {
             return _inputString ?? Clean();
         }
 
+        /// <summary>
+        /// Return a cleaned, normalised version string.
+        /// </summary>
+        /// <returns>The cleaned version string.</returns>
         public string Clean()
         {
             var preReleaseString = PreRelease == null ? ""
@@ -117,6 +162,9 @@ namespace SemVer
                     Major, Minor, Patch, preReleaseString, buildString);
         }
 
+        /// <summary>
+        /// Calculate a hash code for the version.
+        /// </summary>
         public override int GetHashCode()
         {
             // The build version isn't included when calculating the hash,
@@ -135,6 +183,11 @@ namespace SemVer
         }
 
         // Implement IEquatable<Version>
+        /// <summary>
+        /// Test whether two versions are semantically equivalent.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool Equals(Version other)
         {
             if (ReferenceEquals(other, null))
