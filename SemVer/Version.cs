@@ -154,7 +154,7 @@ namespace SemVer
         public string Clean()
         {
             var preReleaseString = PreRelease == null ? ""
-                : String.Format("-{0}", PreRelease);
+                : String.Format("-{0}", PreReleaseVersion.Clean(PreRelease));
             var buildString = Build == null ? ""
                 : String.Format("+{0}", Build);
 
