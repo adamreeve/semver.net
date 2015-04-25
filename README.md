@@ -1,11 +1,11 @@
-SemVer.NET: The semantic versioner for .NET.
-============================================
+Semantic Versioning for .NET
+============================
 
 [![Build Status](https://travis-ci.org/adamreeve/semver.net.svg?branch=master)](https://travis-ci.org/adamreeve/semver.net)
 
 This library implements the
 [Semantic Versioning specification](http://semver.org/)
-and the version range specification used by
+and the version range specifications used by
 npm ([node-semver](https://github.com/npm/node-semver)).
 
 Installation
@@ -21,22 +21,49 @@ Install-Package SemanticVersioning
 Quick Start
 -----------
 
+Use the `SemVer` namespace:
+```
+using SemVer;
+```
+
 Construct a range:
 
 ```C#
-var range = new SemVer.Range("~1.2.3")
+var range = new Range("~1.2.3");
 ```
 
 Construct a version:
 ```C#
-var version = new SemVer.Version("1.2.4")
+var version = new Version("1.2.4");
 ```
 
 Test whether the version satisfies the range:
 ```C#
-bool satisfied = range.IsSatisfied(version)
+bool satisfied = range.IsSatisfied(version);
 // satisfied = true
 ```
+
+Filter a list of versions to select only those that
+satisfy a range:
+```C#
+var versions = new [] {
+    new Version("1.2.1"),
+    new Version("1.2.3"),
+    new Version("1.2.8"),
+    new Version("1.3.2"),
+};
+IEnumerable<Version> satisfyingVersions = range.Satisfying(versions);
+// satisfyingVersions = 1.2.3, 1.2.8
+```
+
+Find the maximum version that satisfies a range:
+```C#
+Version selectedVersion = range.MaxSatisfying(versions);
+// selectedVersion = 1.2.8
+```
+
+To get the original input string used when constructing a
+version, use `Version.ToString()`.
 
 Ranges
 ------
@@ -77,3 +104,108 @@ A partial version string, or a version string with components replaced by an `X`
 matches any version where the specified components match.
 
 For example, `1.2.x` is satisfied by `1.2.0` and `1.2.99`, but not `1.3.0`.
+
+### Tilde Ranges
+
+When a minor version is specified, a tilde range only allows changes in the
+patch version. Otherwise if only the major version is specified, only
+changes in the minor version are allowed.
+
+Examples:
+
+* `~1.2.3` is equivalent to `>=1.2.3 < 1.3.0`
+* `~1.2` is equivalent to `>=1.2.0 < 1.3.0`
+* `~1` is equivalent to `>=1.0.0 < 2.0.0`
+
+### Caret Ranges
+
+A caret range allows versions where the most significant non-zero
+version component does not change.
+
+Examples:
+
+* `^1.2.3` is equivalent to `>=1.2.3 < 2.0.0`
+* `^0.2.3` is equivalent to `>=0.2.3 < 0.3.0`
+* `^0.0.3` is equivalent to `>=0.0.3 < 0.0.4`
+
+Pre-Release Versions
+--------------------
+
+Versions with a pre-release can only satisfy ranges that contain
+a comparator with a pre-release version, and the comparator
+version's major, minor and patch components must match those of the
+version being tested.
+
+```C#
+var range = new Range(">=1.2.3-beta.2");
+range.IsSatisfied("1.2.3-beta.3");  // true
+range.IsSatisfied("1.2.3-alpha");   // false
+range.IsSatisfied("1.2.3");         // true
+range.IsSatisfied("1.2.4");         // true
+range.IsSatisfied("1.2.4-beta.5");  // false
+
+var range2 = new Range(">=1.2.3");
+range2.IsSatisfied("1.2.4-alpha");  // false
+```
+
+Version Comparisons
+-------------------
+
+`Version` objects implement [`IEquatable<Version>`](https://msdn.microsoft.com/en-us/library/ms131187%28v=vs.110%29.aspx)
+and [`IComparable<Version>`](https://msdn.microsoft.com/en-us/library/4d7sx9hd%28v=vs.110%29.aspx), and
+can also be compared using `==`, `>`, `>=`, `<`, `<=` and `!=`.
+
+```C#
+var a = new Version("1.2.3");
+var b = new Version("1.3.0");
+a == b;  // false
+a != b;  // true
+a > b;   // false
+a < b;   // true
+a <= b;  // true
+```
+
+
+Usage Notes
+-----------
+
+The `Range` and `Version` constructors will throw
+an `ArgumentException` when an invalid range or version
+string is used.
+These constructors and all methods that accept versions
+as a string have an optional `loose` parameter, which will
+allow some invalid version formats. For example, a pre-release
+version without a leading hyphen
+will be allowed when `loose = true`.
+
+```C#
+var version = new Version("1.2.3alpha");       // Throws ArgumentException
+var version = new Version("1.2.3alpha", true); // No exception thrown
+```
+
+The `Range` class contains separate methods that accept
+versions either as strings or as `Version` objects.
+When passing versions as a string to range methods,
+invalid version strings will act as if the version does
+not satisfy the range, but no exception will be thrown.
+Therefore, if you want to know when a version string is invalid,
+you should construct `Version` objects and check for an `ArgumentException`.
+
+```C#
+var range = new Range("~1.2.3");
+// Returns false:
+range.IsSatisfied("banana");
+// Version constructor throws ArgumentException:
+range.IsSatisfied(new Version("banana"));
+```
+
+For convenience, static methods of the `Range` class are provided
+that accept a range parameter as the first argument and accept versions
+as strings, so you don't have to
+construct any `Range` or `Version` objects if you just want to use one method:
+
+```C#
+// Returns 1.2.8:
+Range.MaxSatisfying("~1.2.3",
+        new [] {"1.2.1", "1.2.3", "1.2.8", "1.3.2"});
+```
