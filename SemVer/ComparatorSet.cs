@@ -19,7 +19,7 @@ namespace SemVer
             }
 
             int position = 0;
-            int end = spec.Count();
+            int end = spec.Length;
 
             while (position < end)
             {

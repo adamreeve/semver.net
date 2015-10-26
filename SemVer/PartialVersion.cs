@@ -30,7 +30,7 @@ namespace SemVer
                     )?
                 )?
                 $",
-            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+            RegexOptions.IgnorePatternWhitespace);
 
         public PartialVersion(string input)
         {
