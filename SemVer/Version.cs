@@ -53,7 +53,7 @@ namespace SemVer
             (\+([0-9A-Za-z\-\.]+))?   # build metadata
             \s*
             $",
-            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+            RegexOptions.IgnorePatternWhitespace);
 
         private static Regex looseRegex = new Regex(@"^
             [v=\s]*
@@ -66,7 +66,7 @@ namespace SemVer
             (\+([0-9A-Za-z\-\.]+))?   # build metadata
             \s*
             $",
-            RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+            RegexOptions.IgnorePatternWhitespace);
 
         /// <summary>
         /// Construct a new semantic version from a version string.
