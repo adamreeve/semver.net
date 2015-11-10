@@ -1,0 +1,26 @@
+version: 0.6.{build}
+configuration: Release
+platform: Any CPU
+assembly_info:
+    patch: true
+    file: '**\AssemblyInfo.*'
+    assembly_version: '{version}'
+    assembly_file_version: '{version}'
+    assembly_informational_version: '{version}'
+before_build:
+    - nuget restore
+build:
+    project: SemVer.sln
+    verbosity: minimal
+    publish_nuget: true
+    publish_nuget_symbols: true
+    include_nuget_references: true
+test:
+    assemblies:
+        - SemVer.Tests.dll
+deploy:
+    provider: NuGet
+    server:
+    api_key:
+        secure: RPsb/q5FQhj8t2SkMH4M0RJ0TZSTI7HKJLnDZmvrOYTsiWE8mygz9F9OPThhVlOf
+    skip_symbols: false
