@@ -20,6 +20,8 @@ test:
         - SemVer.Tests.dll
 deploy:
     provider: NuGet
+    on:
+        branch: master
     server:
     api_key:
         secure: RPsb/q5FQhj8t2SkMH4M0RJ0TZSTI7HKJLnDZmvrOYTsiWE8mygz9F9OPThhVlOf
