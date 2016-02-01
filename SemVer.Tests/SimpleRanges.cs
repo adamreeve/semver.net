@@ -69,5 +69,12 @@ namespace SemVer.Tests
             var range = new Range(">=1.2.9 <1.3.0");
             Assert.Null(range.MaxSatisfying(versions));
         }
+
+        [Fact]
+        public void RangeToString()
+        {
+            var range = new Range(">=1.2.7 <1.3.0");
+            Assert.Equal(">=1.2.7 <1.3.0", range.ToString());
+        }
     }
 }
