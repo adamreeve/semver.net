@@ -11,6 +11,8 @@ namespace SemVer
     {
         private readonly IEnumerable<ComparatorSet> _comparatorSets;
 
+        private readonly string _rangeSpec;
+
         /// <summary>
         /// Construct a new range from a range specification.
         /// </summary>
@@ -19,6 +21,7 @@ namespace SemVer
         /// <exception cref="System.ArgumentException">Thrown when the range specification is invalid.</exception>
         public Range(string rangeSpec, bool loose=false)
         {
+            _rangeSpec = rangeSpec;
             var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.None);
             _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s));
         }
@@ -96,6 +99,15 @@ namespace SemVer
             var versions = ValidVersions(versionStrings, loose);
             var maxVersion = MaxSatisfying(versions);
             return maxVersion == null ? null : maxVersion.ToString();
+        }
+
+        /// <summary>
+        /// Returns the range specification string used when constructing this range.
+        /// </summary>
+        /// <returns>The range string</returns>
+        public override string ToString()
+        {
+            return _rangeSpec;
         }
 
         // Static convenience methods
