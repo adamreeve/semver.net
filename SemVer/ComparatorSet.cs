@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SemVer
 {
-    internal class ComparatorSet
+    internal class ComparatorSet : IEquatable<ComparatorSet>
     {
         private readonly List<Comparator> _comparators;
 
@@ -75,6 +75,28 @@ namespace SemVer
             {
                 return satisfied;
             }
+        }
+
+        public bool Equals(ComparatorSet other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            var thisSet = new HashSet<Comparator>(_comparators);
+            return thisSet.SetEquals(other._comparators);
+        }
+
+        public override bool Equals(object other)
+        {
+            return Equals(other as ComparatorSet);
+        }
+
+        public override int GetHashCode()
+        {
+            // XOR is commutative, so this hash code is independent
+            // of the order of comparators.
+            return _comparators.Aggregate(0, (accum, next) => accum ^ next.GetHashCode());
         }
     }
 }

@@ -189,11 +189,11 @@ namespace SemVer
 
         public bool Equals(Comparator other)
         {
-            if (other == null)
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
-            return ToString() == other.ToString();
+            return ComparatorType == other.ComparatorType && Version == other.Version;
         }
 
         public override bool Equals(object other)

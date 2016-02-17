@@ -7,7 +7,7 @@ namespace SemVer
     /// <summary>
     /// Specifies valid versions.
     /// </summary>
-    public class Range
+    public class Range : IEquatable<Range>
     {
         private readonly IEnumerable<ComparatorSet> _comparatorSets;
 
@@ -108,6 +108,28 @@ namespace SemVer
         public override string ToString()
         {
             return _rangeSpec;
+        }
+
+        public bool Equals(Range other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            var thisSet = new HashSet<ComparatorSet>(_comparatorSets);
+            return thisSet.SetEquals(other._comparatorSets);
+        }
+
+        public override bool Equals(object other)
+        {
+            return Equals(other as Range);
+        }
+
+        public override int GetHashCode()
+        {
+            // XOR is commutative, so this hash code is independent
+            // of the order of comparators.
+            return _comparatorSets.Aggregate(0, (accum, next) => accum ^ next.GetHashCode());
         }
 
         // Static convenience methods
