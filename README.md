@@ -79,11 +79,11 @@ A comparator set is a combination of comparators, where all comparators
 must be satisfied for a comparator set to be satisfied.
 
 A comparator is made up of an operator and a version.
-An operator is one of: `==`, `>`, `>=`, `<`, or `<=`.
+An operator is one of: `=`, `>`, `>=`, `<`, or `<=`.
 For example, the comparator `>=1.2.3` specifies versions
 greater than or equal to `1.2.3`.
 
-An example of a range is `>=1.2.3 <1.3.0 || ==1.3.2`, which
+An example of a range is `>=1.2.3 <1.3.0 || =1.3.2`, which
 is satisfied by `1.2.3`, `1.2.99`, and `1.3.2`, but not `1.3.0`.
 
 Advanced Ranges
