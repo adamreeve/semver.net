@@ -9,7 +9,7 @@ namespace SemVer
     /// </summary>
     public class Range : IEquatable<Range>
     {
-        private readonly IEnumerable<ComparatorSet> _comparatorSets;
+        private readonly ComparatorSet[] _comparatorSets;
 
         private readonly string _rangeSpec;
 
@@ -23,7 +23,7 @@ namespace SemVer
         {
             _rangeSpec = rangeSpec;
             var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.None);
-            _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s));
+            _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s)).ToArray();
         }
 
         /// <summary>
