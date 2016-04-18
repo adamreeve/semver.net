@@ -198,5 +198,21 @@ namespace SemVer.Tests
             Assert.False(v0 < v1);
             Assert.True(v0 <= v1);
         }
+
+        [Fact]
+        public void EqualHashCode()
+        {
+            var a = new Version("1.2.3");
+            var b = new Version("1.2.3");
+            Assert.True(a.GetHashCode() == b.GetHashCode());
+        }
+
+        [Fact]
+        public void DifferentHashCode()
+        {
+            var a = new Version("1.2.3");
+            var b = new Version("1.2.4");
+            Assert.False(a.GetHashCode() == b.GetHashCode());
+        }
     }
 }

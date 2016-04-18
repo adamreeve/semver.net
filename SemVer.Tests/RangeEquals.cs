@@ -27,6 +27,16 @@ namespace SemVer.Tests
             var bRange = new Range(b);
             Assert.False(aRange.Equals(bRange));
         }
+
+        [Theory]
+        [InlineData("~1.2.3", ">=1.2.3 <1.3.0")]
+        [InlineData("~1.2.3 || =1.3.2", "=1.3.2 || >=1.2.3 <1.3.0")]
+        public void EqualHashes(string a, string b)
+        {
+            var aRange = new Range(a);
+            var bRange = new Range(b);
+            Assert.True(aRange.GetHashCode().Equals(bRange.GetHashCode()));
+        }
     }
 }
 

@@ -177,7 +177,10 @@ namespace SemVer
                 hash = hash * 23 + Major.GetHashCode();
                 hash = hash * 23 + Minor.GetHashCode();
                 hash = hash * 23 + Patch.GetHashCode();
-                hash = hash * 23 + PreRelease.GetHashCode();
+                if (PreRelease != null)
+                {
+                    hash = hash * 23 + PreRelease.GetHashCode();
+                }
                 return hash;
             }
         }
