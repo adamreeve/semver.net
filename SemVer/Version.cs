@@ -258,7 +258,7 @@ namespace SemVer
         {
             if (ReferenceEquals(a, null))
             {
-                return false;
+                return ReferenceEquals(b, null) ? true : false;
             }
             return a.CompareTo(b) >= 0;
         }
@@ -267,7 +267,7 @@ namespace SemVer
         {
             if (ReferenceEquals(a, null))
             {
-                return false;
+                return ReferenceEquals(b, null) ? false : true;
             }
             return a.CompareTo(b) < 0;
         }
@@ -276,7 +276,7 @@ namespace SemVer
         {
             if (ReferenceEquals(a, null))
             {
-                return false;
+                return true;
             }
             return a.CompareTo(b) <= 0;
         }

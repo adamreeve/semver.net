@@ -214,5 +214,40 @@ namespace SemVer.Tests
             var b = new Version("1.2.4");
             Assert.False(a.GetHashCode() == b.GetHashCode());
         }
+
+        [Fact]
+        public void NullEqualsNull()
+        {
+            Version a = null;
+            Version b = null;
+            Assert.True(a == b);
+            Assert.True(a >= b);
+            Assert.True(a <= b);
+            Assert.False(a != b);
+            Assert.False(a > b);
+            Assert.False(a < b);
+        }
+
+        [Fact]
+        public void NullNotEqualValidVersion()
+        {
+            Version a = null;
+            Version b = new Version("1.2.3");
+            Assert.False(a == b);
+            Assert.False(b == a);
+            Assert.True(a != b);
+            Assert.True(b != a);
+        }
+
+        [Fact]
+        public void NullLessThanValidVersion()
+        {
+            Version a = null;
+            Version b = new Version("1.2.3");
+            Assert.True(a < b);
+            Assert.True(a <= b);
+            Assert.True(b > a);
+            Assert.True(b >= a);
+        }
     }
 }
