@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace SemVer
@@ -8,13 +9,20 @@ namespace SemVer
     /// <summary>
     /// A semantic version.
     /// </summary>
+    [DataContract]
     public class Version : IComparable<Version>, IEquatable<Version>
     {
+        [DataMember]
         private readonly string _inputString;
+        [DataMember]
         private readonly int _major;
+        [DataMember]
         private readonly int _minor;
+        [DataMember]
         private readonly int _patch;
+        [DataMember]
         private readonly string _preRelease;
+        [DataMember]
         private readonly string _build;
 
         /// <summary>
