@@ -76,6 +76,9 @@ namespace SemVer
             $",
             RegexOptions.IgnorePatternWhitespace);
 
+        // Private constructor only for use with serialization
+        private Version() : this("0.0.0") { }
+
         /// <summary>
         /// Construct a new semantic version from a version string.
         /// </summary>

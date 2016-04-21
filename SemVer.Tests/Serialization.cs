@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Xunit.Extensions;
+using Newtonsoft.Json;
 using System.IO;
 using System.Runtime.Serialization;
 
@@ -12,6 +13,19 @@ namespace SemVer.Tests
         {
             var input = new Version("1.2.3-alpha2+test");
             var output = DeserializeFromXml<Version>(SerializeToXml(input));
+
+            Assert.Equal(1, output.Major);
+            Assert.Equal(2, output.Minor);
+            Assert.Equal(3, output.Patch);
+            Assert.Equal("alpha2", output.PreRelease);
+            Assert.Equal("test", output.Build);
+        }
+
+        [Fact]
+        public void SerializeVersionWithNewtonsoft()
+        {
+            var input = new Version("1.2.3-alpha2+test");
+            var output = JsonConvert.DeserializeObject<Version>(JsonConvert.SerializeObject(input));
 
             Assert.Equal(1, output.Major);
             Assert.Equal(2, output.Minor);

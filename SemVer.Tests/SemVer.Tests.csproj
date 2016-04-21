@@ -39,6 +39,9 @@
       <Project>{48ba8bb9-c9eb-4f93-bf1b-28e5afec7e55}</Project>
       <Name>SemVer</Name>
     </ProjectReference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.XML" />
