@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SemVer
 {
     /// <summary>
     /// Specifies valid versions.
     /// </summary>
+    [DataContract]
     public class Range : IEquatable<Range>
     {
+        [DataMember]
         private readonly ComparatorSet[] _comparatorSets;
 
+        [DataMember]
         private readonly string _rangeSpec;
 
         /// <summary>
