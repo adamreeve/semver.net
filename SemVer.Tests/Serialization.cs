@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using Xunit.Extensions;
 using Newtonsoft.Json;
 using System.IO;
 using System.Runtime.Serialization;
@@ -32,6 +31,15 @@ namespace SemVer.Tests
             Assert.Equal(3, output.Patch);
             Assert.Equal("alpha2", output.PreRelease);
             Assert.Equal("test", output.Build);
+        }
+
+        [Fact]
+        public void SerializeRange()
+        {
+            var input = new Range("~1.2.3");
+            var output = DeserializeFromXml<Range>(SerializeToXml(input));
+
+            Assert.True(input.Equals(output));
         }
 
         private static string SerializeToXml<T>(T input)

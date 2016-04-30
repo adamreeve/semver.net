@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SemVer
 {
+    [DataContract]
     internal class ComparatorSet : IEquatable<ComparatorSet>
     {
+        [DataMember]
         private readonly List<Comparator> _comparators;
 
         public ComparatorSet(string spec)

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace SemVer
 {
+    [DataContract]
     internal class Comparator : IEquatable<Comparator>
     {
+        [DataMember]
         public readonly Operator ComparatorType;
 
+        [DataMember]
         public readonly Version Version;
 
         private const string pattern = @"
