@@ -1,0 +1,33 @@
+﻿{
+  "title": "SemVer",
+  "version": "0.6.0",
+  "authors": [ "Adam Reeve" ],
+  "copyright": "Copyright 2015 Adam Reeve",
+  "description": "This library implements the Semantic Versioning 2.0.0 specification and the version range specification used by npm.",
+
+  "buildOptions": {
+    "optimize": true
+  },
+
+  "packOptions": {
+    "owners": [ "Adam Reeve" ],
+    "summary": "This library implements the Semantic Versioning 2.0.0 specification and the version range specification used by npm.",
+    "projectUrl": "https://github.com/adamreeve/semver.net",
+    "licenseUrl": "https://github.com/adamreeve/semver.net/blob/master/LICENSE",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/adamreeve/semver.net"
+    }
+  },
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0"
+  },
+
+  "frameworks": {
+    "net45": {},
+    "netstandard1.1": {
+      "imports": "dnxcore50"
+    }
+  }
+}
