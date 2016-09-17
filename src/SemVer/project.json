@@ -1,4 +1,5 @@
 ﻿{
+  "name": "SemanticVersioning",
   "title": "SemanticVersioning",
   "version": "0.7.0",
   "authors": [ "Adam Reeve" ],
