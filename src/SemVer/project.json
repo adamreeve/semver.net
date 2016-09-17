@@ -1,12 +1,13 @@
 ﻿{
-  "title": "SemVer",
+  "title": "SemanticVersioning",
   "version": "0.7.0",
   "authors": [ "Adam Reeve" ],
   "copyright": "Copyright 2016 Adam Reeve",
   "description": "This library implements the Semantic Versioning 2.0.0 specification and the version range specification used by npm.",
 
   "buildOptions": {
-    "optimize": true
+    "optimize": true,
+    "outputName": "SemVer"
   },
 
   "packOptions": {
