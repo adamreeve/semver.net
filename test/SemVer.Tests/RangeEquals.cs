@@ -14,6 +14,8 @@ namespace SemVer.Tests
             var aRange = new Range(a);
             var bRange = new Range(b);
             Assert.True(aRange.Equals(bRange));
+            Assert.True(aRange == bRange);
+            Assert.False(aRange != bRange);
         }
 
         [Theory]
@@ -26,6 +28,8 @@ namespace SemVer.Tests
             var aRange = new Range(a);
             var bRange = new Range(b);
             Assert.False(aRange.Equals(bRange));
+            Assert.False(aRange == bRange);
+            Assert.True(aRange != bRange);
         }
 
         [Theory]
