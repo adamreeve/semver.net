@@ -125,6 +125,20 @@ namespace SemVer
             return Equals(other as Range);
         }
 
+        public static bool operator ==(Range a, Range b)
+        {
+            if (ReferenceEquals(a, null))
+            {
+                return ReferenceEquals(b, null);
+            }
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Range a, Range b)
+        {
+            return !(a == b);
+        }
+
         public override int GetHashCode()
         {
             // XOR is commutative, so this hash code is independent
