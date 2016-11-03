@@ -59,6 +59,11 @@ namespace SemVer
             }
         }
 
+        private ComparatorSet(IEnumerable<Comparator> comparators)
+        {
+            _comparators = comparators.ToList();
+        }
+
         public bool IsSatisfied(Version version)
         {
             bool satisfied = _comparators.All(c => c.IsSatisfied(version));
@@ -77,6 +82,70 @@ namespace SemVer
             }
         }
 
+        public ComparatorSet Intersect(ComparatorSet other)
+        {
+            Func<Comparator, bool> operatorIsGreaterThan = c =>
+                c.ComparatorType == Comparator.Operator.GreaterThan ||
+                c.ComparatorType == Comparator.Operator.GreaterThanOrEqual;
+            Func<Comparator, bool> operatorIsLessThan = c =>
+                c.ComparatorType == Comparator.Operator.LessThan ||
+                c.ComparatorType == Comparator.Operator.LessThanOrEqual;
+            var maxOfMins =
+                _comparators.Concat(other._comparators)
+                .Where(operatorIsGreaterThan)
+                .OrderByDescending(c => c.Version).FirstOrDefault();
+            var minOfMaxs =
+                _comparators.Concat(other._comparators)
+                .Where(operatorIsLessThan)
+                .OrderBy(c => c.Version).FirstOrDefault();
+            if (maxOfMins != null && minOfMaxs != null && maxOfMins.Version > minOfMaxs.Version)
+            {
+                return null;
+            }
+
+            // If there is an equality operator, check that it satisfies other operators
+            var equalityVersions =
+                _comparators.Concat(other._comparators)
+                .Where(c => c.ComparatorType == Comparator.Operator.Equal)
+                .Select(c => c.Version)
+                .ToList();
+            if (equalityVersions.Count > 1)
+            {
+                if (equalityVersions.Any(v => v != equalityVersions[0]))
+                {
+                    return null;
+                }
+            }
+            if (equalityVersions.Count > 0)
+            {
+                if (maxOfMins != null && !maxOfMins.IsSatisfied(equalityVersions[0]))
+                {
+                    return null;
+                }
+                if (minOfMaxs != null && !minOfMaxs.IsSatisfied(equalityVersions[0]))
+                {
+                    return null;
+                }
+                return new ComparatorSet(
+                    new List<Comparator>
+                    {
+                        new Comparator(Comparator.Operator.Equal, equalityVersions[0])
+                    });
+            }
+
+            var comparators = new List<Comparator>();
+            if (maxOfMins != null)
+            {
+                comparators.Add(maxOfMins);
+            }
+            if (minOfMaxs != null)
+            {
+                comparators.Add(minOfMaxs);
+            }
+
+            return comparators.Count > 0 ? new ComparatorSet(comparators) : null;
+        }
+
         public bool Equals(ComparatorSet other)
         {
             if (ReferenceEquals(other, null))
@@ -90,6 +159,11 @@ namespace SemVer
         public override bool Equals(object other)
         {
             return Equals(other as ComparatorSet);
+        }
+
+        public override string ToString()
+        {
+            return string.Join(" ", _comparators.Select(c => c.ToString()));
         }
 
         public override int GetHashCode()
