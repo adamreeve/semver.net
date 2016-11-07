@@ -26,6 +26,12 @@ namespace SemVer
             _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s)).ToArray();
         }
 
+        private Range(IEnumerable<ComparatorSet> comparatorSets)
+        {
+            _comparatorSets = comparatorSets.ToArray();
+            _rangeSpec = string.Join(" || ", _comparatorSets.Select(cs => cs.ToString()));
+        }
+
         /// <summary>
         /// Determine whether the given version satisfies this range.
         /// </summary>
@@ -99,6 +105,24 @@ namespace SemVer
             var versions = ValidVersions(versionStrings, loose);
             var maxVersion = MaxSatisfying(versions);
             return maxVersion == null ? null : maxVersion.ToString();
+        }
+
+        /// <summary>
+        /// Calculate the intersection between two ranges.
+        /// </summary>
+        /// <param name="other">The Range to intersect this Range with</param>
+        /// <returns>The Range intersection</returns>
+        public Range Intersect(Range other)
+        {
+            var allIntersections = _comparatorSets.SelectMany(
+                thisCs => other._comparatorSets.Select(thisCs.Intersect))
+                .Where(cs => cs != null).ToList();
+
+            if (allIntersections.Count == 0)
+            {
+                return new Range("<0.0.0");
+            }
+            return new Range(allIntersections);
         }
 
         /// <summary>
