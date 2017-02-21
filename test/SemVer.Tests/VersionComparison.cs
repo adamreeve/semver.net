@@ -5,6 +5,12 @@ namespace SemVer.Tests
 {
     public class VersionComparison
     {
+        public VersionComparison()
+        {
+            Options.CompareNumericBuildNumber = false;
+            Options.CompareAlphaNumericBuildNumber = false;
+        }
+
         [Fact]
         public void EqualVersions()
         {
@@ -248,6 +254,48 @@ namespace SemVer.Tests
             Assert.True(a <= b);
             Assert.True(b > a);
             Assert.True(b >= a);
+        }
+
+        [Theory]
+        [InlineData("1.2.3+1", "1.2.3+5")]
+        public void NumericBuildNumberLessThan(string a, string b)
+        {
+            Options.CompareNumericBuildNumber = true;
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.True(versionA < versionB);
+        }
+
+        [Theory]
+        [InlineData("1.2.3+5", "1.2.3+5")]
+        [InlineData("1.2.3+7", "1.2.3+5")]
+        public void NumericBuildNumberNotLessThan(string a, string b)
+        {
+            Options.CompareNumericBuildNumber = true;
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.False(versionA < versionB);
+        }
+
+        [Theory]
+        [InlineData("1.2.3+a.1", "1.2.3+b.1")]
+        public void AlphaNumericBuildNumberLessThan(string a, string b)
+        {
+            Options.CompareAlphaNumericBuildNumber = true;
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.True(versionA < versionB);
+        }
+
+        [Theory]
+        [InlineData("1.2.3+a.1", "1.2.3+A.1")]
+        [InlineData("1.2.3+a.7", "1.2.3+a.5")]
+        public void AlphaNumericBuildNumberNotLessThan(string a, string b)
+        {
+            Options.CompareAlphaNumericBuildNumber = true;
+            var versionA = new Version(a);
+            var versionB = new Version(b);
+            Assert.False(versionA < versionB);
         }
     }
 }

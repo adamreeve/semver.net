@@ -216,7 +216,30 @@ namespace SemVer
                 }
             }
 
-            return PreReleaseVersion.Compare(this.PreRelease, other.PreRelease);
+            int comparisonResult = PreReleaseVersion.Compare(this.PreRelease, other.PreRelease);
+            if (comparisonResult != 0)
+            {
+                return comparisonResult;
+            }
+
+            if (Options.CompareNumericBuildNumber)
+            {
+                int thisBuild;
+                if (int.TryParse(Build, out thisBuild))
+                {
+                    int otherBuild;
+                    if (int.TryParse(other.Build, out otherBuild))
+                    {
+                        return thisBuild.CompareTo(otherBuild);
+                    }
+                }
+            }
+            else if (Options.CompareAlphaNumericBuildNumber)
+            {
+                return string.Compare(Build, other.Build, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return comparisonResult;
         }
 
         private IEnumerable<int> PartComparisons(Version other)
