@@ -258,12 +258,22 @@ namespace SemVer.Tests
 
         [Theory]
         [InlineData("1.2.3+1", "1.2.3+5")]
+        [InlineData("1.2.3", "1.2.3+5")]
         public void NumericBuildNumberLessThan(string a, string b)
         {
             Options.CompareNumericBuildNumber = true;
             var versionA = new Version(a);
             var versionB = new Version(b);
             Assert.True(versionA < versionB);
+        }
+
+        [Theory]
+        [InlineData(">2.0.0 <2.0.0+37", "2.0.0+31")]
+        public void NumericBuildSatisfyingRange(string rangeSpec, string version)
+        {
+            Options.CompareNumericBuildNumber = true;
+            var range = new Range(rangeSpec);
+            Assert.True(range.IsSatisfied(version));
         }
 
         [Theory]

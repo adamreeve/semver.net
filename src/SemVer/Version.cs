@@ -224,6 +224,21 @@ namespace SemVer
 
             if (Options.CompareNumericBuildNumber)
             {
+                if (Build == null && other.Build == null)
+                {
+                    return 0;
+                }
+
+                if (Build == null)
+                {
+                    return -1;
+                }
+
+                if (other.Build == null)
+                {
+                    return 1;
+                }
+
                 int thisBuild;
                 if (int.TryParse(Build, out thisBuild))
                 {

@@ -16,6 +16,8 @@ namespace SemVer
 
         public string PreRelease { get; set; }
 
+        public string Build { get; set; }
+
         private static Regex regex = new Regex(@"^
                 [v=\s]*
                 (\d+|[Xx\*])                      # major version
@@ -86,6 +88,11 @@ namespace SemVer
             {
                 PreRelease = match.Groups[7].Value;
             }
+
+            if (match.Groups[9].Success)
+            {
+                Build = match.Groups[9].Value;
+            }
         }
 
         public Version ToZeroVersion()
@@ -94,7 +101,8 @@ namespace SemVer
                     Major ?? 0,
                     Minor ?? 0,
                     Patch ?? 0,
-                    PreRelease);
+                    PreRelease,
+                    Build);
         }
 
         public bool IsFull()
