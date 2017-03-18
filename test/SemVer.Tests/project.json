@@ -2,6 +2,10 @@
   "version": "1.0.0",
   "testRunner": "xunit",
 
+  "buildOptions": {
+    "keyFile": null
+  },
+
   "dependencies": {
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "SemVer": { "target": "project" },
