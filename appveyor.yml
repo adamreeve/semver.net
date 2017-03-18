@@ -5,6 +5,8 @@ branches:
 pull_requests:
   do_not_increment_build_number: true
 install:
+  - nuget install secure-file -ExcludeVersion
+  - ps: .\build\decrypt-snk.ps1
   - ps: .\build\install.ps1
 build_script:
 - ps: .\build\build.ps1 $env:APPVEYOR_BUILD_VERSION $env:APPVEYOR_REPO_TAG_NAME
@@ -21,3 +23,6 @@ deploy:
   on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
+environment:
+  ENCRYPTION_KEY:
+    secure: hbiBHn0JfRy73jn/e8rUKMI5Z3T78zXCmpD8dRexuc3uJivS5I5WNf6JiZOdEM8G
