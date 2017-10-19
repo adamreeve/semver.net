@@ -1,1 +1,1 @@
-Invoke-Expression ".\build\dotnet-install.ps1 -Channel LTS -Version 1.0.4"
+Invoke-Expression ".\build\dotnet-install.ps1 -Channel Current -Version 2.0.0"
