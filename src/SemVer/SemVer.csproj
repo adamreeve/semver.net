@@ -18,6 +18,10 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <SemVerKeyFile>..\..\build\semver-key.snk</SemVerKeyFile>
+    <AssemblyOriginatorKeyFile Condition="Exists('$(SemVerKeyFile)')">$(SemVerKeyFile)</AssemblyOriginatorKeyFile>
+    <SignAssembly Condition="Exists('$(SemVerKeyFile)')">true</SignAssembly>
+    <PublicSign Condition="Exists('$(SemVerKeyFile)') AND '$(OS)' != 'Windows_NT'">true</PublicSign>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
