@@ -1,21 +1,16 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26114.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{04DC58CE-98CC-4B50-ABFE-F7CC430214EA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
-		global.json = global.json
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SemVer", "src\SemVer\SemVer.xproj", "{A3FF1B6D-68BB-4A0A-A487-858AAA8E3573}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SemVer.Tests", "test\SemVer.Tests\SemVer.Tests.xproj", "{31C3A95C-30B9-424F-9961-ED2CD7B483EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2812B094-14CA-4639-BCD1-627AB1F2D143}"
 EndProject
@@ -27,26 +22,53 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{53D398CA
 		build\test.ps1 = build\test.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{92C43A55-E62D-4E0B-A2EC-C7762A426CD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVer", "src\SemVer\SemVer.csproj", "{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemVer.Tests", "test\SemVer.Tests\SemVer.Tests.csproj", "{01655192-DCD1-4C4F-A3C4-BA0275185544}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A3FF1B6D-68BB-4A0A-A487-858AAA8E3573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3FF1B6D-68BB-4A0A-A487-858AAA8E3573}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3FF1B6D-68BB-4A0A-A487-858AAA8E3573}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3FF1B6D-68BB-4A0A-A487-858AAA8E3573}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31C3A95C-30B9-424F-9961-ED2CD7B483EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31C3A95C-30B9-424F-9961-ED2CD7B483EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31C3A95C-30B9-424F-9961-ED2CD7B483EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31C3A95C-30B9-424F-9961-ED2CD7B483EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Debug|x64.ActiveCfg = Debug|x64
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Debug|x64.Build.0 = Debug|x64
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Debug|x86.ActiveCfg = Debug|x86
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Debug|x86.Build.0 = Debug|x86
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Release|x64.ActiveCfg = Release|x64
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Release|x64.Build.0 = Release|x64
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Release|x86.ActiveCfg = Release|x86
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}.Release|x86.Build.0 = Release|x86
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Debug|x64.ActiveCfg = Debug|x64
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Debug|x64.Build.0 = Debug|x64
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Debug|x86.ActiveCfg = Debug|x86
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Debug|x86.Build.0 = Debug|x86
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Release|x64.ActiveCfg = Release|x64
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Release|x64.Build.0 = Release|x64
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Release|x86.ActiveCfg = Release|x86
+		{01655192-DCD1-4C4F-A3C4-BA0275185544}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{31C3A95C-30B9-424F-9961-ED2CD7B483EF} = {2812B094-14CA-4639-BCD1-627AB1F2D143}
+		{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1} = {92C43A55-E62D-4E0B-A2EC-C7762A426CD7}
+		{01655192-DCD1-4C4F-A3C4-BA0275185544} = {2812B094-14CA-4639-BCD1-627AB1F2D143}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = SemVer\SemVer.csproj

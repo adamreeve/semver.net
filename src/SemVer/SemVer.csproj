@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>This library implements the Semantic Versioning 2.0.0 specification and the version range specification used by npm.</Description>
+    <Copyright>Copyright 2016 Adam Reeve</Copyright>
+    <AssemblyTitle>SemanticVersioning</AssemblyTitle>
+    <VersionPrefix>0.8.0</VersionPrefix>
+    <Authors>Adam Reeve</Authors>
+    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
+    <AssemblyName>SemVer</AssemblyName>
+    <PackageId>SemVer</PackageId>
+    <PackageProjectUrl>https://github.com/adamreeve/semver.net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/adamreeve/semver.net/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/adamreeve/semver.net</RepositoryUrl>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.1' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
