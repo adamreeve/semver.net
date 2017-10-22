@@ -6,7 +6,7 @@ param (
 & dotnet restore .\src\SemVer\SemVer.csproj #2>1
 
 if ($TagVersionNumber) {
-    & dotnet pack .\src\SemVer\SemVer.csproj -c Release /p:VersionPrefix="$BuildVersionNumber" /p:VersionSuffix="$TagVersionNumber" 2>&1
+    & dotnet pack .\src\SemVer\SemVer.csproj -c Release /p:VersionPrefix="$TagVersionNumber" 2>&1
 } else {
     & dotnet pack .\src\SemVer\SemVer.csproj -c Release /p:VersionPrefix="$BuildVersionNumber" 2>&1
 }
