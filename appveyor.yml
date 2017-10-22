@@ -19,7 +19,7 @@ deploy:
   api_key:
     secure: pNzGmk+a6w7IpZ1wfiXemLtVAt9YSWtHVHjmbS8yDnDMaH5iY9Zuw34sRP8DianW
   skip_symbols: true
-  artifact: /.*\.nupkg/
+  artifact: /SemanticVersioning.*\.nupkg/
   on:
       branch: master                # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
