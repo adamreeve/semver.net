@@ -4,14 +4,6 @@ if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
     Write-Host "Decrypting SNK file"
     .\secure-file\tools\secure-file -decrypt .\build\semver-key.snk.enc -secret $env:ENCRYPTION_KEY -out .\build\semver-key.snk
 
-    $projectFiles = @('.\src\SemVer\project.json', '.\test\SemVer.Tests\project.json')
-    foreach ($path in $projectFiles) {
-        Write-Host "Setting keyFile property in $path"
-        $projectFile = Get-Content $path -raw | ConvertFrom-Json
-        $projectFile.buildOptions.keyFile = "../../build/semver-key.snk"
-        $projectFile | ConvertTo-Json -Depth 20 | set-content $path
-    }
-
     Write-Host "Updating AssemblyInfo.cs"
     $assemblyInfo = '.\src\SemVer\Properties\AssemblyInfo.cs'
     (Get-Content $assemblyInfo) |
