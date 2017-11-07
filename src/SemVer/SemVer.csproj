@@ -1,12 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <TargetFrameworks>net45;netstandard1.1;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Description>This library implements the Semantic Versioning 2.0.0 specification and the version range specification used by npm.</Description>
     <Copyright>Copyright 2016 Adam Reeve</Copyright>
     <AssemblyTitle>SemanticVersioning</AssemblyTitle>
     <VersionPrefix>0.8.0</VersionPrefix>
     <Authors>Adam Reeve</Authors>
-    <TargetFrameworks>net45;netstandard1.1;netstandard2.0</TargetFrameworks>
     <AssemblyName>SemVer</AssemblyName>
     <PackageId>SemanticVersioning</PackageId>
     <PackageProjectUrl>https://github.com/adamreeve/semver.net</PackageProjectUrl>
