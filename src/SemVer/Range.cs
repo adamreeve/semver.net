@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,7 +29,7 @@ namespace SemVer
         private Range(IEnumerable<ComparatorSet> comparatorSets)
         {
             _comparatorSets = comparatorSets.ToArray();
-            _rangeSpec = string.Join(" || ", _comparatorSets.Select(cs => cs.ToString()));
+            _rangeSpec = string.Join(" || ", _comparatorSets.Select(cs => cs.ToString()).ToArray());
         }
 
         /// <summary>
