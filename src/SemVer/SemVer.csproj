@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-    <TargetFrameworks>net45;netstandard1.1;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.1;netstandard2.0;net35</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
@@ -12,7 +12,7 @@
     <Description>This library implements the Semantic Versioning 2.0.0 specification and the version range specification used by npm.</Description>
     <Copyright>Copyright 2016 Adam Reeve</Copyright>
     <AssemblyTitle>SemanticVersioning</AssemblyTitle>
-    <VersionPrefix>0.8.0</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Adam Reeve</Authors>
     <AssemblyName>SemVer</AssemblyName>
     <PackageId>SemanticVersioning</PackageId>
@@ -35,5 +35,9 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
+
+   <PropertyGroup Condition="'$(TargetFramework)' == 'net35' and  '$(MSBuildRuntimeType)' == 'Core'">
+        <FrameworkPathOverride>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+    </PropertyGroup>
 
 </Project>

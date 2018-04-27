@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -163,7 +163,7 @@ namespace SemVer
 
         public override string ToString()
         {
-            return string.Join(" ", _comparators.Select(c => c.ToString()));
+            return string.Join(" ", _comparators.Select(c => c.ToString()).ToArray());
         }
 
         public override int GetHashCode()
