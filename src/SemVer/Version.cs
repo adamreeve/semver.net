@@ -44,11 +44,11 @@ namespace SemVer
 
         private static Regex strictRegex = new Regex(@"^
             \s*v?
-            (\d+)                     # major version
+            ([0-9]|[1-9][0-9]+)       # major version
             \.
-            (\d+)                     # minor version
+            ([0-9]|[1-9][0-9]+)       # minor version
             \.
-            (\d+)                     # patch version
+            ([0-9]|[1-9][0-9]+)       # patch version
             (\-([0-9A-Za-z\-\.]+))?   # pre-release version
             (\+([0-9A-Za-z\-\.]+))?   # build metadata
             \s*
