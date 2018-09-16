@@ -17,7 +17,7 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: pNzGmk+a6w7IpZ1wfiXemLtVAt9YSWtHVHjmbS8yDnDMaH5iY9Zuw34sRP8DianW
+    secure: a72+aAahTCkfDkPF1U3YCdR2LE3j39Bi953hmgYVBtcFWOmZzmSgd6aNn8nT4iwd
   skip_symbols: true
   artifact: /SemanticVersioning.*\.nupkg/
   on:
