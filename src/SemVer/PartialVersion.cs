@@ -6,7 +6,7 @@ namespace SemVer
 {
     // A version that might not have a minor or patch
     // number, for use in ranges like "^1.2" or "2.x"
-    internal class PartialVersion
+    public class PartialVersion
     {
         public int? Major { get; set; }
 
