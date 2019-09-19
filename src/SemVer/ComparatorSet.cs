@@ -98,7 +98,7 @@ namespace SemVer
                 _comparators.Concat(other._comparators)
                 .Where(operatorIsLessThan)
                 .OrderBy(c => c.Version).FirstOrDefault();
-            if (maxOfMins != null && minOfMaxs != null && maxOfMins.Version > minOfMaxs.Version)
+            if (maxOfMins != null && minOfMaxs != null && !maxOfMins.Intersects(minOfMaxs))
             {
                 return null;
             }
