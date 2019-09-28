@@ -152,6 +152,35 @@ namespace SemVer
             }
         }
 
+        public bool Intersects(Comparator other)
+        {
+            Func<Comparator, bool> operatorIsGreaterThan = c =>
+                c.ComparatorType == Operator.GreaterThan ||
+                c.ComparatorType == Operator.GreaterThanOrEqual;
+            Func<Comparator, bool> operatorIsLessThan = c =>
+                c.ComparatorType == Operator.LessThan ||
+                c.ComparatorType == Operator.LessThanOrEqual;
+            Func<Comparator, bool> operatorIncludesEqual = c =>
+                c.ComparatorType == Operator.GreaterThanOrEqual ||
+                c.ComparatorType == Operator.Equal ||
+                c.ComparatorType == Operator.LessThanOrEqual;
+
+            if (this.Version > other.Version && (operatorIsLessThan(this) || operatorIsGreaterThan(other)))
+                return true;
+
+            if (this.Version < other.Version && (operatorIsGreaterThan(this) || operatorIsLessThan(other)))
+                return true;
+
+            if (this.Version == other.Version && (
+                (operatorIncludesEqual(this) && operatorIncludesEqual(other)) ||
+                (operatorIsLessThan(this) && operatorIsLessThan(other)) ||
+                (operatorIsGreaterThan(this) && operatorIsGreaterThan(other))
+            ))
+                return true;
+
+            return false;
+        }
+
         public enum Operator
         {
             Equal = 0,
