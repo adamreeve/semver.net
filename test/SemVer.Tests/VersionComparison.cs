@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using System;
+using System.Linq;
+using Xunit;
 using Xunit.Extensions;
 
 namespace SemVer.Tests
@@ -100,6 +102,53 @@ namespace SemVer.Tests
             Assert.False(versionA <= versionB);
         }
 
+        [Fact]
+        public void CompareTo()
+        {
+            var actual =
+                new []
+                {
+                    "1.5.0",
+                    "0.0.4",
+                    "0.1.0",
+                    "0.1.1",
+                    "0.0.2",
+                    "1.0.0"
+                }
+                .Select(v => new Version(v))
+                .Cast<IComparable>()
+                .OrderBy(x => x)
+                .Select(x => x.ToString());
+
+            var expected =
+                new[]
+                {
+                    "0.0.2",
+                    "0.0.4",
+                    "0.1.0",
+                    "0.1.1",
+                    "1.0.0",
+                    "1.5.0"
+                };
+
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void CompareToNull()
+        {
+            var version = (IComparable) new Version("1.0.0");
+            var actual = version.CompareTo(null);
+            Assert.Equal(1, actual);
+        }
+        
+        [Fact]
+        public void CompareToDifferentType()
+        {
+            var version = (IComparable) new Version("1.0.0");
+            Assert.Throws<ArgumentException>(() => version.CompareTo(new Object()));
+        }
+        
         // Comparison tests from npm/node-semver
         [Theory]
         [InlineData("0.0.0", "0.0.0-foo")]

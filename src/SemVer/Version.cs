@@ -8,7 +8,7 @@ namespace SemVer
     /// <summary>
     /// A semantic version.
     /// </summary>
-    public class Version : IComparable<Version>, IEquatable<Version>
+    public class Version : IComparable<Version>, IComparable, IEquatable<Version>
     {
         private readonly string _inputString;
         private readonly int _major;
@@ -200,6 +200,20 @@ namespace SemVer
             return CompareTo(other) == 0;
         }
 
+        // Implement IComparable
+        public int CompareTo(object obj)
+        {
+            switch (obj)
+            {
+                case null:
+                    return 1;
+                case Version v:
+                    return CompareTo(v);
+                default:
+                    throw new ArgumentException("Object is not a Version");
+            }
+        }
+        
         // Implement IComparable<Version>
         public int CompareTo(Version other)
         {
