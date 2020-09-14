@@ -213,6 +213,45 @@ namespace SemVer
             return range.MaxSatisfying(versionStrings);
         }
 
+        /// <summary>
+        /// Construct a new range from a range specification.
+        /// </summary>
+        /// <param name="rangeSpec">The range specification string.</param>
+        /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <exception cref="System.ArgumentException">Thrown when the range specification is invalid.</exception>
+        public static Range Parse(string rangeSpec, bool loose = false) 
+            => new Range(rangeSpec, loose);
+
+        /// <summary>
+        /// Try to construct a new range from a range specification. 
+        /// </summary>
+        /// <param name="rangeSpec">The range specification string.</param>
+        /// <param name="result">The Range</param>
+        /// <returns>A boolean indicating success of the parse operation.</returns>
+        public static bool TryParse(string rangeSpec, out Range result)
+            => TryParse(rangeSpec, loose: false, out result);
+
+        /// <summary>
+        /// Try to construct a new range from a range specification. 
+        /// </summary>
+        /// <param name="rangeSpec">The range specification string.</param>
+        /// <param name="result">The Range</param>
+        /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <returns>A boolean indicating success of the parse operation.</returns>
+        public static bool TryParse(string rangeSpec, bool loose, out Range result)
+        {
+            try
+            {
+                result = Parse(rangeSpec, loose);
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
+        }
+
         private IEnumerable<Version> ValidVersions(IEnumerable<string> versionStrings, bool loose)
         {
             foreach (var v in versionStrings)
