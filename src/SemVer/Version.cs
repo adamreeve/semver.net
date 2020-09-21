@@ -40,7 +40,7 @@ namespace SemVer
         /// <summary>
         /// The build string, or null for no build version.
         /// </summary>
-        public string Build { get {return _build; } }
+        public string Build { get { return _build; } }
 
         private static Regex strictRegex = new Regex(@"^
             \s*v?
@@ -74,7 +74,7 @@ namespace SemVer
         /// <param name="input">The version string.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <exception cref="System.ArgumentException">Thrown when the version string is invalid.</exception>
-        public Version(string input, bool loose=false)
+        public Version(string input, bool loose = false)
         {
             _inputString = input;
 
@@ -213,7 +213,7 @@ namespace SemVer
                     throw new ArgumentException("Object is not a Version");
             }
         }
-        
+
         // Implement IComparable<Version>
         public int CompareTo(Version other)
         {
@@ -253,15 +253,17 @@ namespace SemVer
         /// <param name="input">The version string.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <exception cref="System.ArgumentException">Thrown when the version string is invalid.</exception>
-        public static Version Parse(string input, bool loose = false) 
+        /// <returns>The Version</returns>
+        public static Version Parse(string input, bool loose = false)
             => new Version(input, loose);
 
         /// <summary>
         /// Try to construct a new semantic version from a version string.
         /// </summary>
         /// <param name="input">The version string.</param>
+        /// <param name="result">The Version, or null when parse fails.</param>
         /// <returns>A boolean indicating success of the parse operation.</returns>
-        public static bool TryParse(string input, out Version result) 
+        public static bool TryParse(string input, out Version result)
             => TryParse(input, loose: false, out result);
 
         /// <summary>
@@ -269,6 +271,7 @@ namespace SemVer
         /// </summary>
         /// <param name="input">The version string.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="result">The Version, or null when parse fails.</param>
         /// <returns>A boolean indicating success of the parse operation.</returns>
         public static bool TryParse(string input, bool loose, out Version result)
         {

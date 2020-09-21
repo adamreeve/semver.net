@@ -19,10 +19,10 @@ namespace SemVer
         /// <param name="rangeSpec">The range specification string.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <exception cref="System.ArgumentException">Thrown when the range specification is invalid.</exception>
-        public Range(string rangeSpec, bool loose=false)
+        public Range(string rangeSpec, bool loose = false)
         {
             _rangeSpec = rangeSpec;
-            var comparatorSetSpecs = rangeSpec.Split(new [] {"||"}, StringSplitOptions.None);
+            var comparatorSetSpecs = rangeSpec.Split(new[] { "||" }, StringSplitOptions.None);
             _comparatorSets = comparatorSetSpecs.Select(s => new ComparatorSet(s)).ToArray();
         }
 
@@ -49,7 +49,7 @@ namespace SemVer
         /// <param name="versionString">The version to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>true if the range is satisfied by the version.</returns>
-        public bool IsSatisfied(string versionString, bool loose=false)
+        public bool IsSatisfied(string versionString, bool loose = false)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace SemVer
         /// <param name="versions">The version strings to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>An IEnumerable of satisfying version strings.</returns>
-        public IEnumerable<string> Satisfying(IEnumerable<string> versions, bool loose=false)
+        public IEnumerable<string> Satisfying(IEnumerable<string> versions, bool loose = false)
         {
             return versions.Where(v => IsSatisfied(v, loose));
         }
@@ -100,7 +100,7 @@ namespace SemVer
         /// <param name="versionStrings">The version strings to select from.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>The maximum satisfying version string, or null if no versions satisfied this range.</returns>
-        public string MaxSatisfying(IEnumerable<string> versionStrings, bool loose=false)
+        public string MaxSatisfying(IEnumerable<string> versionStrings, bool loose = false)
         {
             var versions = ValidVersions(versionStrings, loose);
             var maxVersion = MaxSatisfying(versions);
@@ -180,7 +180,7 @@ namespace SemVer
         /// <param name="versionString">The version to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>true if the range is satisfied by the version.</returns>
-        public static bool IsSatisfied(string rangeSpec, string versionString, bool loose=false)
+        public static bool IsSatisfied(string rangeSpec, string versionString, bool loose = false)
         {
             var range = new Range(rangeSpec);
             return range.IsSatisfied(versionString);
@@ -194,7 +194,7 @@ namespace SemVer
         /// <param name="versions">The version strings to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>An IEnumerable of satisfying version strings.</returns>
-        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions, bool loose=false)
+        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions, bool loose = false)
         {
             var range = new Range(rangeSpec);
             return range.Satisfying(versions);
@@ -207,7 +207,7 @@ namespace SemVer
         /// <param name="versionStrings">The version strings to select from.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>The maximum satisfying version string, or null if no versions satisfied this range.</returns>
-        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings, bool loose=false)
+        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings, bool loose = false)
         {
             var range = new Range(rangeSpec);
             return range.MaxSatisfying(versionStrings);
@@ -219,14 +219,15 @@ namespace SemVer
         /// <param name="rangeSpec">The range specification string.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <exception cref="System.ArgumentException">Thrown when the range specification is invalid.</exception>
-        public static Range Parse(string rangeSpec, bool loose = false) 
+        /// <returns>The Range</returns>
+        public static Range Parse(string rangeSpec, bool loose = false)
             => new Range(rangeSpec, loose);
 
         /// <summary>
         /// Try to construct a new range from a range specification. 
         /// </summary>
         /// <param name="rangeSpec">The range specification string.</param>
-        /// <param name="result">The Range</param>
+        /// <param name="result">The Range, or null when parse fails.</param>
         /// <returns>A boolean indicating success of the parse operation.</returns>
         public static bool TryParse(string rangeSpec, out Range result)
             => TryParse(rangeSpec, loose: false, out result);
@@ -235,8 +236,8 @@ namespace SemVer
         /// Try to construct a new range from a range specification. 
         /// </summary>
         /// <param name="rangeSpec">The range specification string.</param>
-        /// <param name="result">The Range</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="result">The Range, or null when parse fails.</param>
         /// <returns>A boolean indicating success of the parse operation.</returns>
         public static bool TryParse(string rangeSpec, bool loose, out Range result)
         {
