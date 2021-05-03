@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SemVer
+namespace SemanticVersioning
 {
     internal class Comparator : IEquatable<Comparator>
     {

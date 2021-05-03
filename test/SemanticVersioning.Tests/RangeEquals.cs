@@ -1,8 +1,8 @@
 ﻿using Xunit;
 using Xunit.Extensions;
-using SemVer;
+using SemanticVersioning;
 
-namespace SemVer.Tests
+namespace SemanticVersioning.Tests
 {
     public class RangeEquals
     {

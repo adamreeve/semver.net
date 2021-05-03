@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit;
 using Xunit.Extensions;
 
-namespace SemVer.Tests
+namespace SemanticVersioning.Tests
 {
     public class VersionComparison
     {

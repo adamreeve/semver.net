@@ -23,9 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{53D398CA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{92C43A55-E62D-4E0B-A2EC-C7762A426CD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemVer", "src\SemVer\SemVer.csproj", "{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticVersioning", "src\SemanticVersioning\SemanticVersioning.csproj", "{F72D0BFF-AE07-47BE-B486-BAAA37FC3BA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemVer.Tests", "test\SemVer.Tests\SemVer.Tests.csproj", "{01655192-DCD1-4C4F-A3C4-BA0275185544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticVersioning.Tests", "test\SemanticVersioning.Tests\SemanticVersioning.Tests.csproj", "{01655192-DCD1-4C4F-A3C4-BA0275185544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,7 +73,7 @@ Global
 		SolutionGuid = {67BB09FF-65F5-45FB-89BB-2ED3BBCA7D43}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SemVer\SemVer.csproj
+		StartupItem = SemanticVersioning\SemanticVersioning.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None

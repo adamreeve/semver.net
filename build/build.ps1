@@ -3,10 +3,10 @@ param (
 	[string]$TagVersionNumber
 )
 
-& dotnet restore .\src\SemVer\SemVer.csproj #2>1
+& dotnet restore .\src\SemanticVersioning\SemanticVersioning.csproj #2>1
 
 if ($TagVersionNumber) {
-    & dotnet pack .\src\SemVer\SemVer.csproj -c Release /p:VersionPrefix="$TagVersionNumber" 2>&1
+    & dotnet pack .\src\SemanticVersioning\SemanticVersioning.csproj -c Release /p:VersionPrefix="$TagVersionNumber" 2>&1
 } else {
-    & dotnet pack .\src\SemVer\SemVer.csproj -c Release /p:VersionPrefix="$BuildVersionNumber" 2>&1
+    & dotnet pack .\src\SemanticVersioning\SemanticVersioning.csproj -c Release /p:VersionPrefix="$BuildVersionNumber" 2>&1
 }

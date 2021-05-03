@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace SemVer
+namespace SemanticVersioning
 {
     // A version that might not have a minor or patch
     // number, for use in ranges like "^1.2" or "2.x"

@@ -11,7 +11,7 @@ npm ([node-semver](https://github.com/npm/node-semver)).
 Installation
 ------------
 
-SemVer.NET is available as a [NuGet package](https://www.nuget.org/packages/SemanticVersioning/).
+SemanticVersioning is available as a [NuGet package](https://www.nuget.org/packages/SemanticVersioning/).
 To install it, run the following command in the Package Manager Console:
 
 ```
@@ -21,9 +21,9 @@ Install-Package SemanticVersioning
 Quick Start
 -----------
 
-Use the `SemVer` namespace:
+Use the `SemanticVersioning` namespace:
 ```
-using SemVer;
+using SemanticVersioning;
 ```
 
 Construct a range:
@@ -68,7 +68,7 @@ version, use `Version.ToString()`.
 Ranges
 ------
 
-SemVer.NET range specifications match the range specifications
+SemanticVersioning range specifications match the range specifications
 used by [node-semver](https://github.com/npm/node-semver).
 
 A range specification is constructed by combining multiple
