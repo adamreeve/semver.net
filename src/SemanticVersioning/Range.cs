@@ -36,10 +36,11 @@ namespace SemanticVersioning
         /// Determine whether the given version satisfies this range.
         /// </summary>
         /// <param name="version">The version to check.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>true if the range is satisfied by the version.</returns>
-        public bool IsSatisfied(Version version)
+        public bool IsSatisfied(Version version, bool includePrerelease = false)
         {
-            return _comparatorSets.Any(s => s.IsSatisfied(version));
+            return _comparatorSets.Any(s => s.IsSatisfied(version, includePrerelease: includePrerelease));
         }
 
         /// <summary>
@@ -48,13 +49,14 @@ namespace SemanticVersioning
         /// </summary>
         /// <param name="versionString">The version to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>true if the range is satisfied by the version.</returns>
-        public bool IsSatisfied(string versionString, bool loose = false)
+        public bool IsSatisfied(string versionString, bool loose = false, bool includePrerelease = false)
         {
             try
             {
                 var version = new Version(versionString, loose);
-                return IsSatisfied(version);
+                return IsSatisfied(version, includePrerelease: includePrerelease);
             }
             catch (ArgumentException)
             {
@@ -66,10 +68,11 @@ namespace SemanticVersioning
         /// Return the set of versions that satisfy this range.
         /// </summary>
         /// <param name="versions">The versions to check.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>An IEnumerable of satisfying versions.</returns>
-        public IEnumerable<Version> Satisfying(IEnumerable<Version> versions)
+        public IEnumerable<Version> Satisfying(IEnumerable<Version> versions, bool includePrerelease = false)
         {
-            return versions.Where(IsSatisfied);
+            return versions.Where(v => IsSatisfied(v, includePrerelease: includePrerelease));
         }
 
         /// <summary>
@@ -78,20 +81,22 @@ namespace SemanticVersioning
         /// </summary>
         /// <param name="versions">The version strings to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>An IEnumerable of satisfying version strings.</returns>
-        public IEnumerable<string> Satisfying(IEnumerable<string> versions, bool loose = false)
+        public IEnumerable<string> Satisfying(IEnumerable<string> versions, bool loose = false, bool includePrerelease = false)
         {
-            return versions.Where(v => IsSatisfied(v, loose));
+            return versions.Where(v => IsSatisfied(v, loose, includePrerelease));
         }
 
         /// <summary>
         /// Return the maximum version that satisfies this range.
         /// </summary>
         /// <param name="versions">The versions to select from.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>The maximum satisfying version, or null if no versions satisfied this range.</returns>
-        public Version MaxSatisfying(IEnumerable<Version> versions)
+        public Version MaxSatisfying(IEnumerable<Version> versions, bool includePrerelease = false)
         {
-            return Satisfying(versions).Max();
+            return Satisfying(versions, includePrerelease: includePrerelease).Max();
         }
 
         /// <summary>
@@ -99,11 +104,12 @@ namespace SemanticVersioning
         /// </summary>
         /// <param name="versionStrings">The version strings to select from.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>The maximum satisfying version string, or null if no versions satisfied this range.</returns>
-        public string MaxSatisfying(IEnumerable<string> versionStrings, bool loose = false)
+        public string MaxSatisfying(IEnumerable<string> versionStrings, bool loose = false, bool includePrerelease = false)
         {
             var versions = ValidVersions(versionStrings, loose);
-            var maxVersion = MaxSatisfying(versions);
+            var maxVersion = MaxSatisfying(versions, includePrerelease: includePrerelease);
             return maxVersion == null ? null : maxVersion.ToString();
         }
 
@@ -179,11 +185,12 @@ namespace SemanticVersioning
         /// <param name="rangeSpec">The range specification.</param>
         /// <param name="versionString">The version to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>true if the range is satisfied by the version.</returns>
-        public static bool IsSatisfied(string rangeSpec, string versionString, bool loose = false)
+        public static bool IsSatisfied(string rangeSpec, string versionString, bool loose = false, bool includePrerelease = false)
         {
             var range = new Range(rangeSpec);
-            return range.IsSatisfied(versionString);
+            return range.IsSatisfied(versionString, loose: loose, includePrerelease: includePrerelease);
         }
 
         /// <summary>
@@ -194,10 +201,10 @@ namespace SemanticVersioning
         /// <param name="versions">The version strings to check.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
         /// <returns>An IEnumerable of satisfying version strings.</returns>
-        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions, bool loose = false)
+        public static IEnumerable<string> Satisfying(string rangeSpec, IEnumerable<string> versions, bool loose = false, bool includePrerelease = false)
         {
             var range = new Range(rangeSpec);
-            return range.Satisfying(versions);
+            return range.Satisfying(versions, loose: loose, includePrerelease: includePrerelease);
         }
 
         /// <summary>
@@ -206,11 +213,12 @@ namespace SemanticVersioning
         /// <param name="rangeSpec">The range specification.</param>
         /// <param name="versionStrings">The version strings to select from.</param>
         /// <param name="loose">When true, be more forgiving of some invalid version specifications.</param>
+        /// <param name="includePrerelease">When true, allow prerelease versions to satisfy the range.</param>
         /// <returns>The maximum satisfying version string, or null if no versions satisfied this range.</returns>
-        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings, bool loose = false)
+        public static string MaxSatisfying(string rangeSpec, IEnumerable<string> versionStrings, bool loose = false, bool includePrerelease = false)
         {
             var range = new Range(rangeSpec);
-            return range.MaxSatisfying(versionStrings);
+            return range.MaxSatisfying(versionStrings, includePrerelease: includePrerelease);
         }
 
         /// <summary>
