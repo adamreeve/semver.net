@@ -131,7 +131,7 @@ Examples:
 Pre-Release Versions
 --------------------
 
-Versions with a pre-release can only satisfy ranges that contain
+Versions with a pre-release can normally only satisfy ranges that contain
 a comparator with a pre-release version, and the comparator
 version's major, minor and patch components must match those of the
 version being tested.
@@ -147,6 +147,20 @@ range.IsSatisfied("1.2.4-beta.5");  // false
 var range2 = new Range(">=1.2.3");
 range2.IsSatisfied("1.2.4-alpha");  // false
 ```
+
+To change this behaviour and allow any pre-release version to satisfy a range,
+you can set the `includePrerelease` argument to true:
+
+```C#
+var range = new Range(">=1.2.3-beta.2");
+range.IsSatisfied("1.2.4-beta.5", includePrerelease=true);  // true
+
+var range2 = new Range(">=1.2.3");
+range2.IsSatisfied("1.2.4-alpha", includePrerelease=true);  // true
+```
+
+The `Range.Satisfying` and `Range.MaxSatisfying` methods similarly support
+an `includePrerelease` argument to allow any pre-release version.
 
 Version Comparisons
 -------------------
