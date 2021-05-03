@@ -31,6 +31,29 @@ namespace SemanticVersioning.Tests
         }
 
         [Theory]
+        [InlineData(">1.2.3-alpha.3", "1.2.3")]
+        [InlineData(">1.2.3-alpha.3", "1.2.3-alpha.4")]
+        [InlineData(">1.2.3-alpha.3", "3.4.5-alpha.1")]
+        public void MatchingPreReleaseWithIncludePrereleases(string rangeString, string versionString)
+        {
+            var range = new Range(rangeString);
+            var version = new Version(versionString);
+            Assert.True(range.IsSatisfied(version, includePrerelease: true));
+        }
+
+        [Theory]
+        [InlineData("1.2.3", "1.2.3-alpha.3")]
+        [InlineData("1.2.3-alpha.3", "1.2.3-alpha.7")]
+        [InlineData("1.2.3-alpha.3", "1.2.3")]
+        [InlineData(">1.2.3-alpha.3", "1.2.3-alpha.2")]
+        public void ExcludedPreReleaseWithIncludePrereleases(string rangeString, string versionString)
+        {
+            var range = new Range(rangeString);
+            var version = new Version(versionString);
+            Assert.False(range.IsSatisfied(version, includePrerelease: true));
+        }
+
+        [Theory]
         [InlineData("~1.2.3-alpha.3", "1.2.3-alpha.7")]
         [InlineData("~1.2.3-alpha.3", "1.2.5")]
         [InlineData("1.2.3-alpha.3 - 1.2.4", "1.2.3-alpha.7")]
