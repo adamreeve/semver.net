@@ -5,7 +5,7 @@ if ($lastExitCode -ne 0) {
 }
 
 # run tests
-& dotnet test .\test\SemVer.Tests\SemVer.Tests.csproj -c Release 2>&1
+& dotnet test .\test\SemanticVersioning.Tests\SemanticVersioning.Tests.csproj -c Release 2>&1
 if ($lastExitCode -ne 0) {
     $host.SetShouldExit($lastExitCode)
 }

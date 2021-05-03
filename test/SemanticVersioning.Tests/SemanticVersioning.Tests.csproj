@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>SemVer.Tests</AssemblyName>
-    <PackageId>SemVer.Tests</PackageId>
+    <AssemblyName>SemanticVersioning.Tests</AssemblyName>
+    <PackageId>SemanticVersioning.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SemVer\SemVer.csproj" />
+    <ProjectReference Include="..\..\src\SemanticVersioning\SemanticVersioning.csproj" />
   </ItemGroup>
 
   <ItemGroup>

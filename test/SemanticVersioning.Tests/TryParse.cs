@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace SemVer.Tests
+namespace SemanticVersioning.Tests
 {
     public class TryParse
     {

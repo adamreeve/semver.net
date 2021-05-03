@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SemVer
+namespace SemanticVersioning
 {
     internal class ComparatorSet : IEquatable<ComparatorSet>
     {
