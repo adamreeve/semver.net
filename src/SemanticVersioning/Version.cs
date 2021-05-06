@@ -42,6 +42,11 @@ namespace SemanticVersioning
         /// </summary>
         public string Build { get { return _build; } }
 
+        /// <summary>
+        /// Whether this version is a pre-release
+        /// </summary>
+        public bool IsPreRelease { get { return !string.IsNullOrEmpty(_preRelease); } }
+
         private static Regex strictRegex = new Regex(@"^
             \s*v?
             ([0-9]|[1-9][0-9]+)       # major version
