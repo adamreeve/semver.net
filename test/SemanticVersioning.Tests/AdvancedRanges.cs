@@ -7,17 +7,18 @@ namespace SemanticVersioning.Tests
     public class AdvancedRanges
     {
         [Theory]
-        [InlineData("~1.2.3", ">=1.2.3", "<1.3.0")]
-        [InlineData("~1.2", ">=1.2.0", "<1.3.0")]
-        [InlineData("~1", ">=1.0.0", "<2.0.0")]
-        [InlineData("~0.2.3", ">=0.2.3", "<0.3.0")]
-        [InlineData("~0.2", ">=0.2.0", "<0.3.0")]
-        [InlineData("~0", ">=0.0.0", "<1.0.0")]
+        [InlineData("~1.2.3", ">=1.2.3", "1.3.0")]
+        [InlineData("~1.2", ">=1.2.0", "1.3.0")]
+        [InlineData("~1", ">=1.0.0", "2.0.0")]
+        [InlineData("~0.2.3", ">=0.2.3", "0.3.0")]
+        [InlineData("~0.2", ">=0.2.0", "0.3.0")]
+        [InlineData("~0", ">=0.0.0", "1.0.0")]
         public void TestTildeRanges(string range,
-                string comparatorStringA, string comparatorStringB)
+                string comparatorStringA, string comparatorVersionB)
         {
             var comparatorA = new Comparator(comparatorStringA);
-            var comparatorB = new Comparator(comparatorStringB);
+            var comparatorB = new Comparator(
+                Comparator.Operator.LessThanExcludingPrereleases, Version.Parse(comparatorVersionB));
             var comparators = Desugarer.TildeRange(range).Item2;
             Assert.Equal(comparators.Count(), 2);
             Assert.Contains(comparatorA, comparators);
@@ -25,20 +26,21 @@ namespace SemanticVersioning.Tests
         }
 
         [Theory]
-        [InlineData("^1.2.3", ">=1.2.3", "<2.0.0")]
-        [InlineData("^0.2.3", ">=0.2.3", "<0.3.0")]
-        [InlineData("^0.0.3", ">=0.0.3", "<0.0.4")]
-        [InlineData("^1.2.x", ">=1.2.0", "<2.0.0")]
-        [InlineData("^0.0.x", ">=0.0.0", "<0.1.0")]
-        [InlineData("^0.0", ">=0.0.0", "<0.1.0")]
-        [InlineData("^1.x", ">=1.0.0", "<2.0.0")]
-        [InlineData("^0.x", ">=0.0.0", "<1.0.0")]
-        [InlineData("^0.0.0", ">=0.0.0", "<0.0.1")]
-        public void TestCaretRanges(string range,
-                string comparatorStringA, string comparatorStringB)
+        [InlineData("^1.2.3", "1.2.3", "2.0.0")]
+        [InlineData("^0.2.3", "0.2.3", "0.3.0")]
+        [InlineData("^0.0.3", "0.0.3", "0.0.4")]
+        [InlineData("^1.2.x", "1.2.0", "2.0.0")]
+        [InlineData("^0.0.x", "0.0.0", "0.1.0")]
+        [InlineData("^0.0", "0.0.0", "0.1.0")]
+        [InlineData("^1.x", "1.0.0", "2.0.0")]
+        [InlineData("^0.x", "0.0.0", "1.0.0")]
+        [InlineData("^0.0.0", "0.0.0", "0.0.1")]
+        public void TestCaretRanges(string range, string comparatorVersionA, string comparatorVersionB)
         {
-            var comparatorA = new Comparator(comparatorStringA);
-            var comparatorB = new Comparator(comparatorStringB);
+            var comparatorA = new Comparator(
+                Comparator.Operator.GreaterThanOrEqualIncludingPrereleases, Version.Parse(comparatorVersionA));
+            var comparatorB = new Comparator(
+                Comparator.Operator.LessThanExcludingPrereleases, Version.Parse(comparatorVersionB));
             var comparators = Desugarer.CaretRange(range).Item2;
             Assert.Equal(comparators.Count(), 2);
             Assert.Contains(comparatorA, comparators);
@@ -61,6 +63,10 @@ namespace SemanticVersioning.Tests
             foreach (var comparatorString in comparatorStrings)
             {
                 var comparator = new Comparator(comparatorString);
+                if (comparator.ComparatorType == Comparator.Operator.LessThan)
+                {
+                    comparator = new Comparator(Comparator.Operator.LessThanExcludingPrereleases, comparator.Version);
+                }
                 Assert.Contains(comparator, comparators);
             }
         }
@@ -79,6 +85,14 @@ namespace SemanticVersioning.Tests
             foreach (var comparatorString in comparatorStrings)
             {
                 var comparator = new Comparator(comparatorString);
+                if (comparator.ComparatorType == Comparator.Operator.LessThan)
+                {
+                    comparator = new Comparator(Comparator.Operator.LessThanExcludingPrereleases, comparator.Version);
+                }
+                else if (comparator.ComparatorType == Comparator.Operator.GreaterThanOrEqual)
+                {
+                    comparator = new Comparator(Comparator.Operator.GreaterThanOrEqualIncludingPrereleases, comparator.Version);
+                }
                 Assert.Contains(comparator, comparators);
             }
         }

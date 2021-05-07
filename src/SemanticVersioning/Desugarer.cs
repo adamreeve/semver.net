@@ -41,7 +41,7 @@ namespace SemanticVersioning
 
             return Tuple.Create(
                     match.Length,
-                    minMaxComparators(minVersion, maxVersion));
+                    MinMaxComparators(minVersion, maxVersion));
         }
 
         // Allows changes that do not modify the left-most non-zero digit
@@ -95,7 +95,7 @@ namespace SemanticVersioning
 
             return Tuple.Create(
                     match.Length,
-                    minMaxComparators(minVersion, maxVersion));
+                    MinMaxComparators(minVersion, maxVersion, minOperator: Comparator.Operator.GreaterThanOrEqualIncludingPrereleases));
         }
 
         public static Tuple<int, Comparator[]> HyphenRange(string spec)
@@ -128,7 +128,7 @@ namespace SemanticVersioning
             var minVersion = minPartialVersion.ToZeroVersion();
 
             Comparator.Operator maxOperator = maxPartialVersion.IsFull()
-                ? Comparator.Operator.LessThanOrEqual : Comparator.Operator.LessThan;
+                ? Comparator.Operator.LessThanOrEqual : Comparator.Operator.LessThanExcludingPrereleases;
 
             Version maxVersion = null;
 
@@ -153,7 +153,10 @@ namespace SemanticVersioning
             }
             return Tuple.Create(
                     match.Length,
-                    minMaxComparators(minVersion, maxVersion, maxOperator));
+                    MinMaxComparators(
+                        minVersion, maxVersion,
+                        minOperator: Comparator.Operator.GreaterThanOrEqualIncludingPrereleases,
+                        maxOperator: maxOperator));
         }
 
         public static Tuple<int, Comparator[]> StarRange(string spec)
@@ -206,23 +209,21 @@ namespace SemanticVersioning
 
             return Tuple.Create(
                     match.Length,
-                    minMaxComparators(minVersion, maxVersion));
+                    MinMaxComparators(minVersion, maxVersion));
         }
 
-        private static Comparator[] minMaxComparators(Version minVersion, Version maxVersion,
-                Comparator.Operator maxOperator=Comparator.Operator.LessThan)
+        private static Comparator[] MinMaxComparators(Version minVersion, Version maxVersion,
+                Comparator.Operator minOperator=Comparator.Operator.GreaterThanOrEqual,
+                Comparator.Operator maxOperator=Comparator.Operator.LessThanExcludingPrereleases)
         {
-            var minComparator = new Comparator(
-                    Comparator.Operator.GreaterThanOrEqual,
-                    minVersion);
+            var minComparator = new Comparator(minOperator, minVersion);
             if (maxVersion == null)
             {
                 return new [] { minComparator };
             }
             else
             {
-                var maxComparator = new Comparator(
-                        maxOperator, maxVersion);
+                var maxComparator = new Comparator(maxOperator, maxVersion);
                 return new [] { minComparator, maxComparator };
             }
         }

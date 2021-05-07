@@ -86,10 +86,12 @@ namespace SemanticVersioning
         {
             Func<Comparator, bool> operatorIsGreaterThan = c =>
                 c.ComparatorType == Comparator.Operator.GreaterThan ||
-                c.ComparatorType == Comparator.Operator.GreaterThanOrEqual;
+                c.ComparatorType == Comparator.Operator.GreaterThanOrEqual ||
+                c.ComparatorType == Comparator.Operator.GreaterThanOrEqualIncludingPrereleases;
             Func<Comparator, bool> operatorIsLessThan = c =>
                 c.ComparatorType == Comparator.Operator.LessThan ||
-                c.ComparatorType == Comparator.Operator.LessThanOrEqual;
+                c.ComparatorType == Comparator.Operator.LessThanOrEqual ||
+                c.ComparatorType == Comparator.Operator.LessThanExcludingPrereleases;
             var maxOfMins =
                 _comparators.Concat(other._comparators)
                 .Where(operatorIsGreaterThan)

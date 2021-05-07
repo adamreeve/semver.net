@@ -58,7 +58,7 @@ namespace SemanticVersioning
                         }
                         break;
                     case Operator.GreaterThan:
-                        ComparatorType = Operator.GreaterThanOrEqual;
+                        ComparatorType = Operator.GreaterThanOrEqualIncludingPrereleases;
                         if (!partialVersion.Major.HasValue)
                         {
                             // >* is unsatisfiable, so use <0.0.0
