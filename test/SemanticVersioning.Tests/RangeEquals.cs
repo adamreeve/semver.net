@@ -7,8 +7,9 @@ namespace SemanticVersioning.Tests
     public class RangeEquals
     {
         [Theory]
-        [InlineData("~1.2.3", ">=1.2.3 <1.3.0")]
-        [InlineData("~1.2.3 || =1.3.2", "=1.3.2 || >=1.2.3 <1.3.0")]
+        [InlineData(">=1.2.3 <1.3.0", "<1.3.0 >=1.2.3")]
+        [InlineData("~1.2.3 || =1.3.2", "=1.3.2 || ~1.2.3")]
+        [InlineData("<=1.2", "<1.3.0")]
         public void EqualRanges(string a, string b)
         {
             var aRange = new Range(a);
@@ -33,8 +34,9 @@ namespace SemanticVersioning.Tests
         }
 
         [Theory]
-        [InlineData("~1.2.3", ">=1.2.3 <1.3.0")]
-        [InlineData("~1.2.3 || =1.3.2", "=1.3.2 || >=1.2.3 <1.3.0")]
+        [InlineData(">=1.2.3 <1.3.0", "<1.3.0 >=1.2.3")]
+        [InlineData("~1.2.3 || =1.3.2", "=1.3.2 || ~1.2.3")]
+        [InlineData("<=1.2", "<1.3.0")]
         public void EqualHashes(string a, string b)
         {
             var aRange = new Range(a);
