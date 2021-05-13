@@ -64,10 +64,10 @@ namespace SemanticVersioning
             _comparators = comparators.ToList();
         }
 
-        public bool IsSatisfied(Version version)
+        public bool IsSatisfied(Version version, bool includePrerelease = false)
         {
             bool satisfied = _comparators.All(c => c.IsSatisfied(version));
-            if (version.PreRelease != null)
+            if (version.PreRelease != null && !includePrerelease)
             {
                 // If the version is a pre-release, then one of the
                 // comparators must have the same version and also include
@@ -86,10 +86,12 @@ namespace SemanticVersioning
         {
             Func<Comparator, bool> operatorIsGreaterThan = c =>
                 c.ComparatorType == Comparator.Operator.GreaterThan ||
-                c.ComparatorType == Comparator.Operator.GreaterThanOrEqual;
+                c.ComparatorType == Comparator.Operator.GreaterThanOrEqual ||
+                c.ComparatorType == Comparator.Operator.GreaterThanOrEqualIncludingPrereleases;
             Func<Comparator, bool> operatorIsLessThan = c =>
                 c.ComparatorType == Comparator.Operator.LessThan ||
-                c.ComparatorType == Comparator.Operator.LessThanOrEqual;
+                c.ComparatorType == Comparator.Operator.LessThanOrEqual ||
+                c.ComparatorType == Comparator.Operator.LessThanExcludingPrereleases;
             var maxOfMins =
                 _comparators.Concat(other._comparators)
                 .Where(operatorIsGreaterThan)

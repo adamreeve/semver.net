@@ -58,7 +58,7 @@ namespace SemanticVersioning
                         }
                         break;
                     case Operator.GreaterThan:
-                        ComparatorType = Operator.GreaterThanOrEqual;
+                        ComparatorType = Operator.GreaterThanOrEqualIncludingPrereleases;
                         if (!partialVersion.Major.HasValue)
                         {
                             // >* is unsatisfiable, so use <0.0.0
@@ -76,9 +76,17 @@ namespace SemanticVersioning
                             Version = new Version(partialVersion.Major.Value, partialVersion.Minor.Value + 1, 0);
                         }
                         break;
+                    case Operator.LessThan:
+                        // <1.2.x means <1.2.0 but not allowing 1.2.0 prereleases if includePrereleases is used
+                        ComparatorType = Operator.LessThanExcludingPrereleases;
+                        Version = partialVersion.ToZeroVersion();
+                        break;
+                    case Operator.GreaterThanOrEqual:
+                        // >=1.2.x means >=1.2.0 and includes 1.2.0 prereleases if includePrereleases is used
+                        ComparatorType = Operator.GreaterThanOrEqualIncludingPrereleases;
+                        Version = partialVersion.ToZeroVersion();
+                        break;
                     default:
-                        // <1.2.x means <1.2.0
-                        // >=1.2.x means >=1.2.0
                         Version = partialVersion.ToZeroVersion();
                         break;
                 }
@@ -137,16 +145,20 @@ namespace SemanticVersioning
         {
             switch(ComparatorType)
             {
-                case(Operator.Equal):
+                case Operator.Equal:
                     return version == Version;
-                case(Operator.LessThan):
+                case Operator.LessThan:
                     return version < Version;
-                case(Operator.LessThanOrEqual):
+                case Operator.LessThanOrEqual:
                     return version <= Version;
-                case(Operator.GreaterThan):
+                case Operator.GreaterThan:
                     return version > Version;
-                case(Operator.GreaterThanOrEqual):
+                case Operator.GreaterThanOrEqual:
                     return version >= Version;
+                case Operator.GreaterThanOrEqualIncludingPrereleases:
+                    return version >= Version || (version.IsPreRelease && version.BaseVersion() == Version);
+                case Operator.LessThanExcludingPrereleases:
+                    return version < Version && !(version.IsPreRelease && version.BaseVersion() == Version);
                 default:
                     throw new InvalidOperationException("Comparator type not recognised.");
             }
@@ -156,12 +168,15 @@ namespace SemanticVersioning
         {
             Func<Comparator, bool> operatorIsGreaterThan = c =>
                 c.ComparatorType == Operator.GreaterThan ||
-                c.ComparatorType == Operator.GreaterThanOrEqual;
+                c.ComparatorType == Operator.GreaterThanOrEqual ||
+                c.ComparatorType == Operator.GreaterThanOrEqualIncludingPrereleases;
             Func<Comparator, bool> operatorIsLessThan = c =>
                 c.ComparatorType == Operator.LessThan ||
-                c.ComparatorType == Operator.LessThanOrEqual;
+                c.ComparatorType == Operator.LessThanOrEqual ||
+                c.ComparatorType == Operator.LessThanExcludingPrereleases;
             Func<Comparator, bool> operatorIncludesEqual = c =>
                 c.ComparatorType == Operator.GreaterThanOrEqual ||
+                c.ComparatorType == Operator.GreaterThanOrEqualIncludingPrereleases ||
                 c.ComparatorType == Operator.Equal ||
                 c.ComparatorType == Operator.LessThanOrEqual;
 
@@ -188,6 +203,8 @@ namespace SemanticVersioning
             LessThanOrEqual,
             GreaterThan,
             GreaterThanOrEqual,
+            GreaterThanOrEqualIncludingPrereleases,
+            LessThanExcludingPrereleases,
         }
 
         public override string ToString()
@@ -195,19 +212,21 @@ namespace SemanticVersioning
             string operatorString = null;
             switch(ComparatorType)
             {
-                case(Operator.Equal):
+                case Operator.Equal:
                     operatorString = "=";
                     break;
-                case(Operator.LessThan):
+                case Operator.LessThan:
+                case Operator.LessThanExcludingPrereleases:
                     operatorString = "<";
                     break;
-                case(Operator.LessThanOrEqual):
+                case Operator.LessThanOrEqual:
                     operatorString = "<=";
                     break;
-                case(Operator.GreaterThan):
+                case Operator.GreaterThan:
                     operatorString = ">";
                     break;
-                case(Operator.GreaterThanOrEqual):
+                case Operator.GreaterThanOrEqual:
+                case Operator.GreaterThanOrEqualIncludingPrereleases:
                     operatorString = ">=";
                     break;
                 default:
@@ -232,7 +251,7 @@ namespace SemanticVersioning
 
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return new { ComparatorType, Version }.GetHashCode();
         }
     }
 }
