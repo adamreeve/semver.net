@@ -251,7 +251,7 @@ namespace SemanticVersioning
 
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return new { ComparatorType, Version }.GetHashCode();
         }
     }
 }
