@@ -92,14 +92,40 @@ namespace SemanticVersioning
                 c.ComparatorType == Comparator.Operator.LessThan ||
                 c.ComparatorType == Comparator.Operator.LessThanOrEqual ||
                 c.ComparatorType == Comparator.Operator.LessThanExcludingPrereleases;
+            // When two comparators have the same version, the one with the more restrictive
+            // range should take precedence.
+            Func<Comparator.Operator, int> operatorOrdering = op =>
+            {
+                switch (op)
+                {
+                    case Comparator.Operator.LessThanExcludingPrereleases:
+                        return 0;
+                    case Comparator.Operator.LessThan:
+                        return 1;
+                    case Comparator.Operator.LessThanOrEqual:
+                        return 2;
+                    case Comparator.Operator.GreaterThan:
+                        return 0;
+                    case Comparator.Operator.GreaterThanOrEqual:
+                        return 1;
+                    case Comparator.Operator.GreaterThanOrEqualIncludingPrereleases:
+                        return 2;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(op), op, "Unexpected comparator operator");
+                }
+            };
             var maxOfMins =
                 _comparators.Concat(other._comparators)
                 .Where(operatorIsGreaterThan)
-                .OrderByDescending(c => c.Version).FirstOrDefault();
+                .OrderByDescending(c => c.Version)
+                .ThenBy(c => operatorOrdering(c.ComparatorType))
+                .FirstOrDefault();
             var minOfMaxs =
                 _comparators.Concat(other._comparators)
                 .Where(operatorIsLessThan)
-                .OrderBy(c => c.Version).FirstOrDefault();
+                .OrderBy(c => c.Version)
+                .ThenBy(c => operatorOrdering(c.ComparatorType))
+                .FirstOrDefault();
             if (maxOfMins != null && minOfMaxs != null && !maxOfMins.Intersects(minOfMaxs))
             {
                 return null;
