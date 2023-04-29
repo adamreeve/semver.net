@@ -95,7 +95,7 @@ namespace SemanticVersioning
 
             return Tuple.Create(
                     match.Length,
-                    MinMaxComparators(minVersion, maxVersion, minOperator: Comparator.Operator.GreaterThanOrEqualIncludingPrereleases));
+                    MinMaxComparators(minVersion, maxVersion));
         }
 
         public static Tuple<int, Comparator[]> HyphenRange(string spec)
