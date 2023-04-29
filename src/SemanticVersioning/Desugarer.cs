@@ -67,7 +67,12 @@ namespace SemanticVersioning
 
             var version = new PartialVersion(match.Groups[1].Value);
 
-            if (version.Major.Value > 0)
+            if (!version.Major.HasValue)
+            {
+                // ^x: any versions
+                minVersion = version.ToZeroVersion();
+            }
+            else if (version.Major.Value > 0)
             {
                 // Don't allow major version change
                 minVersion = version.ToZeroVersion();
