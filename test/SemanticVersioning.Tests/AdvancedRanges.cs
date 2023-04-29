@@ -67,6 +67,10 @@ namespace SemanticVersioning.Tests
                 {
                     comparator = new Comparator(Comparator.Operator.LessThanExcludingPrereleases, comparator.Version);
                 }
+                if (comparator.ComparatorType == Comparator.Operator.GreaterThanOrEqual)
+                {
+                    comparator = new Comparator(Comparator.Operator.GreaterThanOrEqualIncludingPrereleases, comparator.Version);
+                }
                 Assert.Contains(comparator, comparators);
             }
         }

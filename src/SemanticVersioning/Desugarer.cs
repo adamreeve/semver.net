@@ -209,7 +209,9 @@ namespace SemanticVersioning
 
             return Tuple.Create(
                     match.Length,
-                    MinMaxComparators(minVersion, maxVersion));
+                    MinMaxComparators(
+                        minVersion, maxVersion, 
+                        minOperator: Comparator.Operator.GreaterThanOrEqualIncludingPrereleases));
         }
 
         private static Comparator[] MinMaxComparators(Version minVersion, Version maxVersion,
