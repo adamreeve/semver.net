@@ -4,10 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>SemanticVersioning.Tests</AssemblyName>
     <PackageId>SemanticVersioning.Tests</PackageId>
-    <SemVerKeyFile>..\..\build\semver-key.snk</SemVerKeyFile>
-    <AssemblyOriginatorKeyFile Condition="Exists('$(SemVerKeyFile)')">$(SemVerKeyFile)</AssemblyOriginatorKeyFile>
-    <SignAssembly Condition="Exists('$(SemVerKeyFile)')">true</SignAssembly>
-    <PublicSign Condition="Exists('$(SemVerKeyFile)') AND '$(OS)' != 'Windows_NT'">true</PublicSign>
+    <AssemblyOriginatorKeyFile>..\..\build\semver-key.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,21 +5,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{04DC58CE-98CC-4B50-ABFE-F7CC430214EA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		.travis.yml = .travis.yml
-		appveyor.yml = appveyor.yml
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2812B094-14CA-4639-BCD1-627AB1F2D143}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{53D398CA-9DAD-4AE8-B902-9ABA523366A2}"
-	ProjectSection(SolutionItems) = preProject
-		build\build.ps1 = build\build.ps1
-		build\install.ps1 = build\install.ps1
-		build\installDotnet.ps1 = build\installDotnet.ps1
-		build\test.ps1 = build\test.ps1
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2812B094-14CA-4639-BCD1-627AB1F2D143}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{92C43A55-E62D-4E0B-A2EC-C7762A426CD7}"
 EndProject
@@ -71,40 +61,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67BB09FF-65F5-45FB-89BB-2ED3BBCA7D43}
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SemanticVersioning\SemanticVersioning.csproj
-		Policies = $0
-		$0.DotNetNamingPolicy = $1
-		$1.DirectoryNamespaceAssociation = None
-		$1.ResourceNamePolicy = FileFormatDefault
-		$0.TextStylePolicy = $7
-		$2.FileWidth = 120
-		$2.inheritsSet = VisualStudio
-		$2.inheritsScope = text/plain
-		$2.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $3
-		$3.AfterDelegateDeclarationParameterComma = True
-		$3.inheritsSet = Mono
-		$3.inheritsScope = text/x-csharp
-		$3.scope = text/x-csharp
-		$4.FileWidth = 120
-		$4.inheritsSet = VisualStudio
-		$4.inheritsScope = text/plain
-		$4.scope = text/plain
-		$5.FileWidth = 120
-		$5.inheritsSet = VisualStudio
-		$5.inheritsScope = text/plain
-		$5.scope = application/config+xml
-		$0.XmlFormattingPolicy = $8
-		$6.inheritsSet = null
-		$6.scope = application/config+xml
-		$7.FileWidth = 120
-		$7.inheritsSet = VisualStudio
-		$7.inheritsScope = text/plain
-		$7.scope = application/xml
-		$8.inheritsSet = Mono
-		$8.inheritsScope = application/xml
-		$8.scope = application/xml
 	EndGlobalSection
 EndGlobal
