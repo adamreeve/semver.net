@@ -20,7 +20,7 @@ namespace SemanticVersioning.Tests
             var comparatorB = new Comparator(
                 Comparator.Operator.LessThanExcludingPrereleases, Version.Parse(comparatorVersionB));
             var comparators = Desugarer.TildeRange(range).Item2;
-            Assert.Equal(comparators.Count(), 2);
+            Assert.Equal(2, comparators.Count());
             Assert.Contains(comparatorA, comparators);
             Assert.Contains(comparatorB, comparators);
         }
@@ -42,7 +42,7 @@ namespace SemanticVersioning.Tests
             var comparatorB = new Comparator(
                 Comparator.Operator.LessThanExcludingPrereleases, Version.Parse(comparatorVersionB));
             var comparators = Desugarer.CaretRange(range).Item2;
-            Assert.Equal(comparators.Count(), 2);
+            Assert.Equal(2, comparators.Count());
             Assert.Contains(comparatorA, comparators);
             Assert.Contains(comparatorB, comparators);
         }
@@ -117,7 +117,6 @@ namespace SemanticVersioning.Tests
         [InlineData(">=*", "0.2.4")]
         [InlineData("", "1.0.0")]
         [InlineData("*", "1.2.3")]
-        [InlineData("*", "1.2.3")]
         [InlineData(">=1.0.0", "1.0.0")]
         [InlineData(">=1.0.0", "1.0.1")]
         [InlineData(">=1.0.0", "1.1.0")]
@@ -139,7 +138,6 @@ namespace SemanticVersioning.Tests
         [InlineData("< 2.0.0", "1.9999.9999")]
         [InlineData("<\t2.0.0", "0.2.9")]
         [InlineData(">=0.1.97", "0.1.97")]
-        [InlineData(">=0.1.97", "0.1.97")]
         [InlineData("0.1.20 || 1.2.4", "1.2.4")]
         [InlineData(">=0.2.3 || <0.0.1", "0.0.0")]
         [InlineData(">=0.2.3 || <0.0.1", "0.2.3")]
@@ -154,7 +152,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2.*", "1.2.3")]
         [InlineData("1.2.* || 2.*", "2.1.3")]
         [InlineData("1.2.* || 2.*", "1.2.3")]
-        [InlineData("*", "1.2.3")]
         [InlineData("2", "2.1.2")]
         [InlineData("2.3", "2.3.1")]
         [InlineData("~2.4", "2.4.0")]  // >=2.4.0 <2.5.0
@@ -180,7 +177,6 @@ namespace SemanticVersioning.Tests
         [InlineData("~1.2.1 1.2.3", "1.2.3")]
         [InlineData("~1.2.1 >=1.2.3 1.2.3", "1.2.3")]
         [InlineData("~1.2.1 1.2.3 >=1.2.3", "1.2.3")]
-        [InlineData("~1.2.1 1.2.3", "1.2.3")]
         [InlineData(">=1.2.1 1.2.3", "1.2.3")]
         [InlineData("1.2.3 >=1.2.1", "1.2.3")]
         [InlineData(">=1.2.3 >=1.2.1", "1.2.3")]
@@ -228,7 +224,6 @@ namespace SemanticVersioning.Tests
         [InlineData("<=2.0.0", "2.2.9", false)]
         [InlineData("<2.0.0", "2.9999.9999", false)]
         [InlineData("<2.0.0", "2.2.9", false)]
-        [InlineData(">=0.1.97", "0.1.93", false)]
         [InlineData(">=0.1.97", "0.1.93", false)]
         [InlineData("0.1.20 || 1.2.4", "1.2.3", false)]
         [InlineData(">=0.2.3 || <0.0.1", "0.0.3", false)]

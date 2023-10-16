@@ -44,7 +44,7 @@ namespace SemanticVersioning.Tests
         [InlineData("<=  2.0.0", "0.2.9")]
         [InlineData("<    2.0.0", "1.9999.9999")]
         [InlineData("<\t2.0.0", "0.2.9")]
-        [InlineData(">=0.1.97", "v0.1.97", true)]
+        [InlineData(">=0.1.97", "0.1.97", true)]
         [InlineData(">=0.1.97", "0.1.97")]
         [InlineData("0.1.20 || 1.2.4", "1.2.4")]
         [InlineData(">=0.2.3 || <0.0.1", "0.0.0")]
