@@ -38,7 +38,7 @@ namespace SemanticVersioning.Tests
         public void TestCaretRanges(string range, string comparatorVersionA, string comparatorVersionB)
         {
             var comparatorA = new Comparator(
-                Comparator.Operator.GreaterThanOrEqualIncludingPrereleases, Version.Parse(comparatorVersionA));
+                Comparator.Operator.GreaterThanOrEqual, Version.Parse(comparatorVersionA));
             var comparatorB = new Comparator(
                 Comparator.Operator.LessThanExcludingPrereleases, Version.Parse(comparatorVersionB));
             var comparators = Desugarer.CaretRange(range).Item2;

@@ -48,7 +48,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2 - 1.3", "1.3.0-alpha.1")]
         [InlineData("1.2.0 - 1.3.0", "1.2.0-alpha.1")]
         [InlineData("1.2.0 - 1.3.0", "1.3.0-alpha.1")]
-        [InlineData("^0.2.3", "0.2.3-alpha")]
         [InlineData("^0.2.3", "0.2.4-alpha")]
         public void MatchingPreReleaseWithIncludePrereleases(string rangeString, string versionString)
         {
@@ -67,6 +66,7 @@ namespace SemanticVersioning.Tests
         [InlineData("<1.3", "1.3.0-alpha.1")]
         [InlineData("~1.2.3", "1.3.0-alpha.1")]
         [InlineData("^0.2.3", "0.2.2-alpha")]
+        [InlineData("^0.2.3", "0.2.3-alpha")]
         [InlineData("^0.2.3", "0.3.0-alpha")]
         public void ExcludedPreReleaseWithIncludePrereleases(string rangeString, string versionString)
         {

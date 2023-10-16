@@ -26,7 +26,12 @@ namespace SemanticVersioning
             Version maxVersion = null;
 
             var version = new PartialVersion(match.Groups[1].Value);
-            if (version.Minor.HasValue)
+            if (!version.Major.HasValue)
+            {
+                // ~x: any versions
+                minVersion = version.ToZeroVersion();
+            }
+            else if (version.Minor.HasValue)
             {
                 // Doesn't matter whether patch version is null or not,
                 // the logic is the same, min patch version will be zero if null.
@@ -62,7 +67,12 @@ namespace SemanticVersioning
 
             var version = new PartialVersion(match.Groups[1].Value);
 
-            if (version.Major.Value > 0)
+            if (!version.Major.HasValue)
+            {
+                // ^x: any versions
+                minVersion = version.ToZeroVersion();
+            }
+            else if (version.Major.Value > 0)
             {
                 // Don't allow major version change
                 minVersion = version.ToZeroVersion();
@@ -95,7 +105,7 @@ namespace SemanticVersioning
 
             return Tuple.Create(
                     match.Length,
-                    MinMaxComparators(minVersion, maxVersion, minOperator: Comparator.Operator.GreaterThanOrEqualIncludingPrereleases));
+                    MinMaxComparators(minVersion, maxVersion));
         }
 
         public static Tuple<int, Comparator[]> HyphenRange(string spec)
