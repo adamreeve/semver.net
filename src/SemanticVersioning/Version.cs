@@ -48,7 +48,7 @@ namespace SemanticVersioning
         public bool IsPreRelease { get { return !string.IsNullOrEmpty(_preRelease); } }
 
         private static Regex strictRegex = new Regex(@"^
-            \s*v?
+            \s*
             ([0-9]|[1-9][0-9]+)       # major version
             \.
             ([0-9]|[1-9][0-9]+)       # minor version

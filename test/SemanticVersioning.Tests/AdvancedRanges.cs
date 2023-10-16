@@ -117,7 +117,7 @@ namespace SemanticVersioning.Tests
         [InlineData(">=*", "0.2.4")]
         [InlineData("", "1.0.0")]
         [InlineData("*", "1.2.3")]
-        [InlineData("*", "v1.2.3")]
+        [InlineData("*", "1.2.3")]
         [InlineData(">=1.0.0", "1.0.0")]
         [InlineData(">=1.0.0", "1.0.1")]
         [InlineData(">=1.0.0", "1.1.0")]
@@ -138,7 +138,7 @@ namespace SemanticVersioning.Tests
         [InlineData("<= 2.0.0", "0.2.9")]
         [InlineData("< 2.0.0", "1.9999.9999")]
         [InlineData("<\t2.0.0", "0.2.9")]
-        [InlineData(">=0.1.97", "v0.1.97")]
+        [InlineData(">=0.1.97", "0.1.97")]
         [InlineData(">=0.1.97", "0.1.97")]
         [InlineData("0.1.20 || 1.2.4", "1.2.4")]
         [InlineData(">=0.2.3 || <0.0.1", "0.0.0")]
@@ -228,7 +228,7 @@ namespace SemanticVersioning.Tests
         [InlineData("<=2.0.0", "2.2.9", false)]
         [InlineData("<2.0.0", "2.9999.9999", false)]
         [InlineData("<2.0.0", "2.2.9", false)]
-        [InlineData(">=0.1.97", "v0.1.93", false)]
+        [InlineData(">=0.1.97", "0.1.93", false)]
         [InlineData(">=0.1.97", "0.1.93", false)]
         [InlineData("0.1.20 || 1.2.4", "1.2.3", false)]
         [InlineData(">=0.2.3 || <0.0.1", "0.0.3", false)]
@@ -263,7 +263,7 @@ namespace SemanticVersioning.Tests
         [InlineData("^1.2.3", "1.2.2", false)]
         [InlineData("^1.2", "1.1.9", false)]
         [InlineData("^1.2.3", "2.0.0-pre", false)]
-        [InlineData("*", "v1.2.3-foo", false)]
+        [InlineData("*", "1.2.3-foo", false)]
         public void UnsatisfiedRanges(string rangeString, string versionString, bool loose)
         {
             var range = new Range(rangeString, loose);

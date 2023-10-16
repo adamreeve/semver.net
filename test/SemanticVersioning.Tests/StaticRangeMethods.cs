@@ -11,14 +11,14 @@ namespace SemanticVersioning.Tests
         {
             var versions = new [] {
                 "1.2.7",
-                "v1.2.8",
-                "v1.2.99",
+                "1.2.8",
+                "1.2.99",
                 "1.2.6",
-                "v1.3.0",
-                "v1.1.0",
+                "1.3.0",
+                "1.1.0",
             };
             var max = Range.MaxSatisfying(">=1.2.7 <1.3.0", versions);
-            Assert.Equal("v1.2.99", max);
+            Assert.Equal("1.2.99", max);
         }
 
         [Fact]
@@ -26,17 +26,17 @@ namespace SemanticVersioning.Tests
         {
             var versions = new [] {
                 "1.2.7",
-                "v1.2.8",
-                "v1.2.99",
+                "1.2.8",
+                "1.2.99",
                 "1.2.6",
-                "v1.3.0",
-                "v1.1.0",
+                "1.3.0",
+                "1.1.0",
             };
             var satisfying = Range.Satisfying(">=1.2.7 <1.3.0", versions).ToArray();
             Assert.Equal(3, satisfying.Count());
             Assert.Contains("1.2.7", satisfying);
-            Assert.Contains("v1.2.8", satisfying);
-            Assert.Contains("v1.2.99", satisfying);
+            Assert.Contains("1.2.8", satisfying);
+            Assert.Contains("1.2.99", satisfying);
         }
 
         [Theory]
@@ -53,15 +53,15 @@ namespace SemanticVersioning.Tests
         {
             var versions = new [] {
                 "1.2.7",
-                "v1.2.8",
-                "v1.2.98",
-                "v1.2.99-alpha.1",
+                "1.2.8",
+                "1.2.98",
+                "1.2.99-alpha.1",
                 "1.2.6",
-                "v1.3.0",
-                "v1.1.0",
+                "1.3.0",
+                "1.1.0",
             };
             var max = Range.MaxSatisfying(">=1.2.7 <1.3.0", versions, includePrerelease: true);
-            Assert.Equal("v1.2.99-alpha.1", max);
+            Assert.Equal("1.2.99-alpha.1", max);
         }
 
         [Fact]
@@ -69,19 +69,19 @@ namespace SemanticVersioning.Tests
         {
             var versions = new [] {
                 "1.2.7",
-                "v1.2.8-beta.2",
-                "v1.2.98",
-                "v1.2.99-alpha.1",
+                "1.2.8-beta.2",
+                "1.2.98",
+                "1.2.99-alpha.1",
                 "1.2.6",
-                "v1.3.0",
-                "v1.1.0",
+                "1.3.0",
+                "1.1.0",
             };
             var satisfying = Range.Satisfying(">=1.2.7 <1.3.0", versions, includePrerelease: true).ToArray();
             Assert.Equal(4, satisfying.Count());
             Assert.Contains("1.2.7", satisfying);
-            Assert.Contains("v1.2.98", satisfying);
-            Assert.Contains("v1.2.8-beta.2", satisfying);
-            Assert.Contains("v1.2.99-alpha.1", satisfying);
+            Assert.Contains("1.2.98", satisfying);
+            Assert.Contains("1.2.8-beta.2", satisfying);
+            Assert.Contains("1.2.99-alpha.1", satisfying);
         }
 
         [Theory]
