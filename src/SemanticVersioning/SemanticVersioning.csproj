@@ -15,13 +15,12 @@
     <RepositoryUrl>https://github.com/adamreeve/semver.net</RepositoryUrl>
     <AssemblyOriginatorKeyFile>..\..\build\semver-key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup Label="Additional nuget files">
-    <None Include="../../LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="../../LICENSE" Pack="true" PackagePath="\" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
