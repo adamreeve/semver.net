@@ -1,7 +1,8 @@
 Semantic Versioning for .NET
 ============================
 
-[![Build status](https://ci.appveyor.com/api/projects/status/7o4s2ey72cv7v41d/branch/master?svg=true)](https://ci.appveyor.com/project/adamreeve/semver-net/branch/master) [![NuGet Version](https://img.shields.io/nuget/v/SemanticVersioning.svg)](https://www.nuget.org/packages/SemanticVersioning/)
+[![CI Status](https://github.com/adamreeve/semver.net/actions/workflows/ci.yml/badge.svg?branch=master&event=push)](https://github.com/adamreeve/semver.net/actions/workflows/ci.yml?query=branch%3Amaster+event%3Apush)
+[![NuGet Version](https://img.shields.io/nuget/v/SemanticVersioning.svg)](https://www.nuget.org/packages/SemanticVersioning/)
 
 This library implements the
 [Semantic Versioning specification](http://semver.org/)
