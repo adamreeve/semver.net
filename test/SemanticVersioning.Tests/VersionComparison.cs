@@ -189,7 +189,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2.3", "=1.2.3", true)]
         [InlineData("1.2.3", " 1.2.3", true)]
         [InlineData("1.2.3", "= 1.2.3", true)]
-        [InlineData("1.2.3", " 1.2.3", false)]
         [InlineData("1.2.3", " =1.2.3", true)]
         [InlineData("1.2.3", " v 1.2.3", true)]
         [InlineData("1.2.3", " = 1.2.3", true)]
@@ -197,7 +196,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2.3-0", "=1.2.3-0", true)]
         [InlineData("1.2.3-0", " 1.2.3-0", true)]
         [InlineData("1.2.3-0", "= 1.2.3-0", true)]
-        [InlineData("1.2.3-0", " 1.2.3-0", false)]
         [InlineData("1.2.3-0", " =1.2.3-0", true)]
         [InlineData("1.2.3-0", " v 1.2.3-0", true)]
         [InlineData("1.2.3-0", " = 1.2.3-0", true)]
@@ -205,7 +203,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2.3-1", "=1.2.3-1", true)]
         [InlineData("1.2.3-1", " 1.2.3-1", true)]
         [InlineData("1.2.3-1", "= 1.2.3-1", true)]
-        [InlineData("1.2.3-1", " 1.2.3-1", false)]
         [InlineData("1.2.3-1", " =1.2.3-1", true)]
         [InlineData("1.2.3-1", " v 1.2.3-1", true)]
         [InlineData("1.2.3-1", " = 1.2.3-1", true)]
@@ -213,7 +210,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2.3-beta", "=1.2.3-beta", true)]
         [InlineData("1.2.3-beta", " 1.2.3-beta", true)]
         [InlineData("1.2.3-beta", "= 1.2.3-beta", true)]
-        [InlineData("1.2.3-beta", " 1.2.3-beta", false)]
         [InlineData("1.2.3-beta", " =1.2.3-beta", true)]
         [InlineData("1.2.3-beta", " v 1.2.3-beta", true)]
         [InlineData("1.2.3-beta", " = 1.2.3-beta", true)]
@@ -221,7 +217,6 @@ namespace SemanticVersioning.Tests
         [InlineData("1.2.3+build", " = 1.2.3+otherbuild", true)]
         [InlineData("1.2.3-beta+build", "1.2.3-beta+otherbuild", false)]
         [InlineData("1.2.3+build", "1.2.3+otherbuild", false)]
-        [InlineData(" 1.2.3+build", "1.2.3+otherbuild", false)]
         public void Equality(string v0s, string v1s, bool loose)
         {
             var v0 = new Version(v0s, false);

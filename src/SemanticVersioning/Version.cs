@@ -48,7 +48,6 @@ namespace SemanticVersioning
         public bool IsPreRelease { get { return !string.IsNullOrEmpty(_preRelease); } }
 
         private static Regex strictRegex = new Regex(@"^
-            \s*
             ([0-9]|[1-9][0-9]+)       # major version
             \.
             ([0-9]|[1-9][0-9]+)       # minor version
@@ -56,7 +55,6 @@ namespace SemanticVersioning
             ([0-9]|[1-9][0-9]+)       # patch version
             (\-([0-9A-Za-z\-\.]+))?   # pre-release version
             (\+([0-9A-Za-z\-\.]+))?   # build metadata
-            \s*
             $",
             RegexOptions.IgnorePatternWhitespace);
 
